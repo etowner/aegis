@@ -8,6 +8,10 @@ export default defineConfig({
     alias: {
       '@': '/src',
       '@tests': '/tests',
+      '@Header': '/src/components/Header',
+      '@Home': '/src/components/Home',
+      '@Account': '/src/components/Account',
+      '@FrontPage': '/src/components/FrontPage',
     },
   },
   test: {

@@ -1,10 +1,10 @@
-import { render, screen } from '@/lib/test-utils';
+import { render, screen } from '@tests/test-utils';
 import userEvent from "@testing-library/user-event";
 import { deleteUser, logoutUser } from "@/api/userApi";
 import { deleteAllAccounts } from "@/api/accountApi";
 import { useUserContext } from "@/context/UserContext";
 import { MemoryRouter } from "react-router-dom";
-import ProfileManager from "./ProfileManager";
+import ProfileManager from "@Header/ProfileManager";
 import { getAxiosError } from '@/api/axiosConfig';
 
 const navigateMock = vi.fn();

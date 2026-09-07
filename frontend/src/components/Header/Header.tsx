@@ -1,6 +1,6 @@
 import { Nav, Navbar } from "react-bootstrap";
-import ProfileManager from "./ProfileManager/ProfileManager";
-import ThemeToggle from "@/Header/ThemeToggle";
+import ProfileManager from "./ProfileManager";
+import ThemeToggle from "./ThemeToggle";
 
 const Header = () => (
   <Navbar variant="dark" className="mb-4">

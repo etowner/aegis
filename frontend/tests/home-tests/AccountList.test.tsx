@@ -1,6 +1,6 @@
-import { render, screen } from '@/lib/test-utils';
+import { render, screen } from '@tests/test-utils';
 import { MemoryRouter } from "react-router-dom";
-import AccountList from "./AccountList";
+import AccountList from "@Home/AccountList";
 
 const mockNavigate = vi.fn();
 

@@ -2,8 +2,8 @@ import { deleteAccount } from "@/api/accountApi";
 import {getAxiosError} from "@/api/axiosConfig";
 import { userEvent } from '@testing-library/user-event';
 import { MemoryRouter } from "react-router-dom";
-import { render, screen, waitFor } from '@/lib/test-utils';
-import CloseAccount from "./CloseAccount";
+import { render, screen, waitFor } from '@tests/test-utils';
+import CloseAccount from "@Account/CloseAccount";
 import { useUserContext } from "@/context/UserContext";
 
 vi.mock("@/api/accountApi");

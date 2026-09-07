@@ -1,5 +1,5 @@
 import AccountBox from "./AccountBox";
-import ThemeToggle from "@/Header/ThemeToggle";
+import ThemeToggle from "@Header/ThemeToggle";
 import "@/@/styles/FrontPage.css";
 
 const FrontPage = () => (

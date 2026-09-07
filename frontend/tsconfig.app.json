@@ -10,6 +10,10 @@
 
     "paths": {
       "@/*": ["./src/*"],
+      "@Header/*": ["./src/components/Header/*"],
+      "@Home/*": ["./src/components/Home/*"],
+      "@Account/*": ["./src/components/Account/*"],
+      "@FrontPage/*": ["./src/components/FrontPage/*"],
       "@tests/*": ["./tests/*"]
     },
 

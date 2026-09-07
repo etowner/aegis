@@ -1,5 +1,5 @@
-import { render, screen } from '@/lib/test-utils';
-import FrontPage from "./FrontPage";
+import { render, screen } from '@tests/test-utils';
+import FrontPage from "@FrontPage/FrontPage";
 
 vi.mock('./AccountBox', () => ({
   default: () => <div data-testid="account-box">Mocked AccountBox</div>,

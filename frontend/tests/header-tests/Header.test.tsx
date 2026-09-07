@@ -1,5 +1,5 @@
-import { render, screen } from '@/lib/test-utils';
-import Header from "./Header";
+import { render, screen } from '@tests/test-utils';
+import Header from "@Header/Header";
 
 vi.mock('./ProfileManager/ProfileManager.tsx', () => ({
   default: () => <div data-testid="profile-manager">Mocked ProfileManager</div>,

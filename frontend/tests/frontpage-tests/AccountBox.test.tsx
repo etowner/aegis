@@ -1,5 +1,5 @@
-import { render, screen, waitFor, within } from '@/lib/test-utils';
-import AccountBox from "./AccountBox";
+import { render, screen, waitFor, within } from '@tests/test-utils';
+import AccountBox from "@FrontPage/AccountBox";
 import { MemoryRouter } from 'react-router-dom';
 import { userEvent } from '@testing-library/user-event';
 import { registerUser, loginUser } from '@/api/userApi';

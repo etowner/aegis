@@ -1,6 +1,6 @@
 import { render as rtlRender} from "@testing-library/react";
-import { UserContextProvider } from "@/context/UserContextProvider";
 import type { RenderOptions } from "@testing-library/react";
+import { UserContextProvider } from "@/context/UserContextProvider";
 
 function render(ui: React.ReactElement,
   options?: Omit<RenderOptions, 'wrapper'>)  {
@@ -10,4 +10,3 @@ function render(ui: React.ReactElement,
 export * from '@testing-library/react'
 // override React Testing Library's render with our own
 export {render}
-

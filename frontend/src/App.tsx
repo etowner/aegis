@@ -1,8 +1,8 @@
 import "./styles/index.css";
 import { Routes, Route } from "react-router-dom";
-import FrontPage from "./components/FrontPage/FrontPage";
-import Home from "./components/Home/Home";
-import Account from "./components/Account/Account";
+import FrontPage from "@FrontPage/FrontPage";
+import Home from "@Home/Home";
+import Account from "@Account/Account";
 import { UserContextProvider } from "./context/UserContextProvider";
 import ProtectedRoute from "./context/ProtectedRoute";
 

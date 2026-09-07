@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom/vitest';
-import { server } from '@/mocks/server';
+import { server } from '@tests/mocks/server';
 
 // Start server before all tests
 beforeAll(() => server.listen())

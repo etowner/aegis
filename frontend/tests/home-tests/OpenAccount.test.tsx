@@ -1,6 +1,6 @@
-import { render, screen } from '@/lib/test-utils';
+import { render, screen } from '@tests/test-utils';
 import userEvent from "@testing-library/user-event";
-import OpenAccount from "./OpenAccount";
+import OpenAccount from "@Home/OpenAccount";
 
 const renderOpenAccount = (overrides = {}) => {
   const props = {

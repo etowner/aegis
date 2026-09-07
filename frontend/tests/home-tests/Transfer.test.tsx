@@ -1,6 +1,6 @@
-import { render, screen } from '@/lib/test-utils';
+import { render, screen } from '@tests/test-utils';
 import userEvent from "@testing-library/user-event";
-import Transfer from "./Transfer";
+import Transfer from "@Home/Transfer";
 import { useUserContext } from "@/context/UserContext";
 import { transfer } from "@/api/transactionApi";
 import { getAxiosError } from "@/api/axiosConfig";

@@ -1,6 +1,6 @@
-import Home from "./Home";
+import Home from "@Home/Home";
 import { useUserContext } from "@/context/UserContext";
-import { render, screen, waitFor } from '@/lib/test-utils';
+import { render, screen, waitFor } from '@tests/test-utils';
 import { createAccount } from "@/api/accountApi";
 import { userEvent } from '@testing-library/user-event';
 import { MemoryRouter } from "react-router-dom";

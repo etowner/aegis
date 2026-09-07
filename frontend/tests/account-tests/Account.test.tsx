@@ -1,11 +1,11 @@
-import AccountPage from "./Account";
+import AccountPage from "@Account/Account";
 import { userEvent } from '@testing-library/user-event';
 import { MemoryRouter } from "react-router-dom";
 import { getTransactions } from "@/api/transactionApi";
 import { getAccount } from "@/api/accountApi";
 import { getAxiosError } from "@/api/axiosConfig";
 import { formatDate } from '@/lib/utils';
-import { render, screen, waitFor } from '@/lib/test-utils';
+import { render, screen, waitFor } from '@tests/test-utils';
 import type { Account, Transaction } from "@/lib/types";
 
 const mockNavigate = vi.fn();

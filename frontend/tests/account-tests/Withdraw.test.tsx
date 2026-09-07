@@ -1,7 +1,6 @@
-import { render, screen, waitFor } from '@/lib/test-utils';
+import { render, screen, waitFor } from '@tests/test-utils';
 import userEvent from "@testing-library/user-event";
-import { MemoryRouter } from "react-router-dom";
-import Withdraw from "./Withdraw";
+import Withdraw from "@Account/Withdraw";
 import { withdraw } from "@/api/transactionApi";
 
 
