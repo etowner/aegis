@@ -126,10 +126,10 @@ export default function ProfileManager() {
                 undone!
               </Modal.Body>
               <Modal.Footer>
-                <Button variant="secondary" onClick={(e) => void handleYes(e)}>
+                <Button variant="danger" onClick={(e) => void handleYes(e)}>
                   Yes
                 </Button>
-                <Button variant="primary" onClick={() => void handleCloseD()}>
+                <Button variant="secondary" onClick={() => void handleCloseD()}>
                   No
                 </Button>
               </Modal.Footer>

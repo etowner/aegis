@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, Col, Container, Row, Alert } from "react-bootstrap";
 import Transfer from "./Transfer";
 import AccountList from "./AccountList";
-import Header from "./Header";
+import Header from "../Header/Header";
 import OpenAccount from "./OpenAccount";
 import PieChart from "./PieChart";
 import { useUserContext } from "../../context/UserContext";
