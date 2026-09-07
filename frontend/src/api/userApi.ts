@@ -1,4 +1,4 @@
-import type { User } from '../lib/types';
+import type { User } from '@/lib/types';
 import api from './axiosConfig';
 
 export const getUser = async () => {

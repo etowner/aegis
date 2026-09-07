@@ -1,7 +1,7 @@
 import { useEffect, useCallback, useState } from "react";
 import { Card, Col, Container, Row, Table, Tab, Tabs } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
-import Header from "../Header/Header";
+import Header from "@/Header/Header";
 import Deposit from "./Deposit";
 import Withdraw from "./Withdraw";
 import CloseAccount from "./CloseAccount";

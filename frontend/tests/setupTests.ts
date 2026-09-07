@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom/vitest';
-import { server } from './mocks/server';
+import { server } from '@/mocks/server';
 
 // Start server before all tests
 beforeAll(() => server.listen())
@@ -18,8 +18,5 @@ Object.defineProperty(window, 'matchMedia', {
     onchange: null,
     addListener: vi.fn(),
     removeListener: vi.fn(),
-    // addEventListener: vi.fn(),
-    // removeEventListener: vi.fn(),
-    // dispatchEvent: vi.fn(),
   })),
 });

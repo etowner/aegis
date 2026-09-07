@@ -1,5 +1,5 @@
 import { http, HttpResponse } from 'msw';
-import type { User } from '../lib/types';
+import type { User } from '@/lib/types';
 
 export const restHandlers = [
   http.get('/api/v1/user', () => {

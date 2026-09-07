@@ -1,4 +1,4 @@
-import type { Account } from '../lib/types';
+import type { Account } from '@/lib/types';
 import api from './axiosConfig';
 
 export const getAccount = async (accountNumber: string) => {

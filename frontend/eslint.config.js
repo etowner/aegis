@@ -1,3 +1,4 @@
+// @ts-check
 import eslintReact from "@eslint-react/eslint-plugin";
 import js from "@eslint/js";
 import globals from "globals";

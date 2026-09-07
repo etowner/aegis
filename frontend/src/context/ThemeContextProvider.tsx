@@ -1,5 +1,5 @@
 import {  useState, useCallback } from "react";
-import { applyTheme, getInitialTheme } from "../lib/theme";
+import { applyTheme, getInitialTheme } from "@/lib/theme";
 import { ThemeContext } from "./ThemeContext";
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {

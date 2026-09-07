@@ -1,4 +1,4 @@
-HELP.md
+
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -9,6 +9,12 @@ target/
 *.properties
 .cache/
 logs/
+
+
+# Frontend
+*.tsbuildinfo
+.vite/
+.vitest/
 
 ### STS ###
 .apt_generated
@@ -60,11 +66,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-### VS Code ###
-.vscode/
-
-*.tsbuildinfo
-.vite/
-logs/
+HELP.md
 plan.md
 docs/
+
+### VS Code ###
+.vscode/
