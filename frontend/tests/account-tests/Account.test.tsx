@@ -4,8 +4,8 @@ import { MemoryRouter } from "react-router-dom";
 import { getTransactions } from "@/api/transactionApi";
 import { getAccount } from "@/api/accountApi";
 import { getAxiosError } from "@/api/axiosConfig";
-import { formatDate } from '@/lib/utils';
-import { render, screen, waitFor } from '@tests/test-utils';
+import { formatCurrency, formatDate } from '@/lib/utils';
+import { logRoles, render, screen, waitFor } from '@tests/test-utils';
 import type { Account, Transaction } from "@/lib/types";
 
 const mockNavigate = vi.fn();
@@ -20,12 +20,20 @@ vi.mock("@/api/accountApi");
 vi.mock("@/api/axiosConfig");
 vi.mock("@/api/transactionApi");
 
-vi.mock("./CloseAccount.tsx", () => ({
+vi.mock("@Account/CloseAccount.tsx", () => ({
   default: () => <div data-testid="close-account">Mocked CloseAccount</div>,
 }));
 
-vi.mock("./LineChart.tsx", () => ({
+vi.mock("@Account/LineChart.tsx", () => ({
   default: () => <div data-testid="line-chart">Mocked LineChart</div>,
+}));
+
+vi.mock("@Account/Deposit.tsx", () => ({
+  default: () => <div data-testid="deposit">Mocked Deposit</div>,
+}));
+
+vi.mock("@Account/Withdraw.tsx", () => ({
+  default: () => <div data-testid="withdraw">Mocked Withdraw</div>,
 }));
 
 const mockAccount: Account = {
@@ -51,6 +59,12 @@ const mockTransactions: Transaction[] = [
 }
 ];
 
+it('debug roles', () => {
+  const { container } = render( <MemoryRouter initialEntries={["/account/1234567890"]}>
+      <AccountPage />
+    </MemoryRouter>)
+  logRoles(container)
+})
 
 const renderAccountPage = async () => {
   render(
@@ -72,28 +86,30 @@ describe("AccountPage", () => {
 
   test("renders account details and transactions", async () => {
     await renderAccountPage();
-
-    expect(screen.getByRole("button", { name: "Back" })).toBeInTheDocument();
-
-    expect(screen.getByRole("heading", { name: `${mockAccount.type} - ${mockAccount.accountNumber}` })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: `Balance: $${mockAccount.balance}` })).toBeInTheDocument();
+    const balance = formatCurrency(mockAccount.balance);
+    expect(screen.getByRole("button", { name: "← Back" })).toBeInTheDocument();
+    expect(screen.getByText(`${mockAccount.type} Account`)).toBeInTheDocument();
+    expect(screen.getByText(`#${mockAccount.accountNumber}`)).toBeInTheDocument();
+    expect(screen.getByText(`${balance}`)).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: `Transaction History` })).toBeInTheDocument();
+    const isCredit = (type: string) => type.toLowerCase() === "deposit";
     
     // Check if transactions are displayed
     expect(screen.getByRole("table")).toBeInTheDocument();
     mockTransactions.forEach((txn) => {
       expect(screen.getByRole("cell", { name: txn.type })).toBeInTheDocument();
-      expect(screen.getByRole("cell", { name: txn.amount.toString() })).toBeInTheDocument();
+      const credit = isCredit(txn.type) ? "+" : "−"
+      const amount = formatCurrency(txn.amount);
+      expect(screen.getByRole("cell", { name: `${credit}${amount}` })).toBeInTheDocument();
       expect(screen.getByRole("cell", { name: formatDate(txn.timestamp) })).toBeInTheDocument();
     });
 
     expect(screen.getByRole("heading", { name: `Transaction Options` })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Deposit" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Withdraw" })).toBeInTheDocument();
 
     expect(screen.getByTestId("line-chart")).toBeInTheDocument();
     expect(screen.getByTestId("close-account")).toBeInTheDocument();
-   
+    expect(screen.getByTestId("deposit")).toBeInTheDocument();
+    expect(screen.getByTestId("withdraw")).toBeInTheDocument();
   });
 
   test("handles API errors gracefully", async () => {
@@ -107,7 +123,7 @@ describe("AccountPage", () => {
 
   test("navigates back to home when Back link is clicked", async () => {  
       await renderAccountPage();
-      const backLink = screen.getByRole("button", { name: "Back" });
+      const backLink = screen.getByRole("button", { name: "← Back" });
       
       await user.click(backLink);
       expect(mockNavigate).toHaveBeenCalledWith("/home");

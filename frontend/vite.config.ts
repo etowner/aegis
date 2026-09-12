@@ -6,7 +6,6 @@ import babel from '@rolldown/plugin-babel';
 export default defineConfig({
   plugins: [
     react(), 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     babel({ presets: [reactCompilerPreset()] })
   ],
   resolve: {

@@ -37,7 +37,7 @@ describe("CloseAccount", () => {
     beforeEach(() => {
         vi.clearAllMocks();
         vi.mocked(useUserContext).mockReturnValue(mockUserContext);
-        vi.mocked(getAxiosError).mockReturnValue('Test error message');
+        // vi.mocked(getAxiosError).mockReturnValue('Test error message');
     });
 
     test("renders the CloseAccount component", () => {
@@ -49,16 +49,16 @@ describe("CloseAccount", () => {
     test("opens the modal when 'Close Account' button is clicked", async () => {
         renderCloseAccount();
         await user.click(screen.getByRole("button", { name: /close account/i }));
-        expect(screen.getByText(/are you sure you want to delete this account\?/i)).toBeInTheDocument();
+        expect(screen.getByText(/are you sure you want to close this account\?/i)).toBeInTheDocument();
         expect(screen.queryByRole("dialog")).toBeInTheDocument();
-        expect(screen.getByRole("button", { name: /yes/i })).toBeInTheDocument();
-        expect(screen.getByRole("button", { name: /no/i })).toBeInTheDocument();
+        expect(screen.getByRole("button", { name: /continue/i })).toBeInTheDocument();
+        expect(screen.getByRole("button", { name: /cancel/i })).toBeInTheDocument();
     });
 
     test("calls deleteAccount and navigates on confirmation", async () => {
         renderCloseAccount();
         await user.click(screen.getByRole("button", { name: /close account/i }));
-        await user.click(screen.getByRole("button", { name: /yes/i }));
+        await user.click(screen.getByRole("button", { name: /continue/i }));
 
         await waitFor(() => expect(deleteAccount).toHaveBeenCalledWith("1234567890"));
         await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith("/home"));
@@ -68,11 +68,10 @@ describe("CloseAccount", () => {
     test("displays an error message if deleteAccount fails", async () => {
         const errorMessage = "Failed to delete account";
         vi.mocked(deleteAccount).mockRejectedValueOnce(new Error(errorMessage));
-        vi.mocked(getAxiosError).mockReturnValueOnce(errorMessage);
-
+        
         renderCloseAccount();
         await user.click(screen.getByRole("button", { name: /close account/i }));
-        await user.click(screen.getByRole("button", { name: /yes/i }));
+        await user.click(screen.getByRole("button", { name: /continue/i }));
 
         await waitFor(() => expect(deleteAccount).toHaveBeenCalledWith("1234567890"));
         expect(await screen.findByRole("alert")).toHaveTextContent(errorMessage);

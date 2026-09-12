@@ -1,4 +1,4 @@
-import { render, screen } from '@tests/test-utils';
+import { logRoles, render, screen } from '@tests/test-utils';
 import userEvent from "@testing-library/user-event";
 import { deleteUser, logoutUser } from "@/api/userApi";
 import { deleteAllAccounts } from "@/api/accountApi";
@@ -29,6 +29,12 @@ vi.mock('@/context/UserContext');
 vi.mock("@/api/userApi");
 vi.mock("@/api/accountApi");
 vi.mock("@/api/axiosConfig");
+vi.mock("@Header/ChangePassword", () => ({
+  default: () => <div data-testid="change-password">Mocked ChangePassword</div>,
+}));
+vi.mock("@Header/ChangeUsername", () => ({
+  default: () => <div data-testid="change-username">Mocked ChangeUsername</div>,
+}));
 
 const user = userEvent.setup();
 
@@ -39,7 +45,7 @@ const renderOffcanvas = async () => {
     </MemoryRouter>
   );
 
-  await user.click(screen.getByRole("link", { name: "demo" }));
+  await user.click(screen.getByRole("button", { name: "demo" }));
   expect(await screen.findByRole("dialog", { hidden: false }),).toBeInTheDocument();
 }
 
@@ -58,7 +64,7 @@ describe("ProfileManager", () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByRole("link", { name: "demo" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "demo" })).toBeInTheDocument();
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
@@ -85,19 +91,18 @@ describe("ProfileManager", () => {
     expect(navigateMock).toHaveBeenCalledWith("/");
   });
 
-  test.skip("clicking on change username modal shows change username form", async () => {
+  test("clicking on change username modal shows change username form", async () => {
     await renderOffcanvas();
-    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: /change username/i }));
-
-    expect(await screen.findByRole("dialog")).toBeInTheDocument();
+    // logRoles(screen.getAllByRole("dialog", { hidden: false })[1]);
+    expect(screen.getByTestId("change-username")).toBeInTheDocument();
   });
 
-  test.skip("clicking on change password modal shows change password form", async () => {
+  test("clicking on change password modal shows change password form", async () => {
     await renderOffcanvas();
     await user.click(screen.getByRole("button", { name: "Change Password" }));
-    expect(await screen.findByText("Change Password"),).toBeInTheDocument();
+    expect(screen.getByTestId("change-password")).toBeInTheDocument();
   });
 
   test("deletes the account and its related data", async () => {

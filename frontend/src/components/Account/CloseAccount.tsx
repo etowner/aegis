@@ -22,7 +22,7 @@ export default function CloseAccount() {
       void navigate(`/home`);
     } catch (err) {
       setError(getAxiosError(err));
-      handleClose();
+      // handleClose();
     } finally {
       setLoading(false);
     }
@@ -39,8 +39,8 @@ export default function CloseAccount() {
         </Modal.Header>
         <Modal.Body>
           Are you sure you want to close this account? This cannot be undone.
+          {error && <Alert variant="danger" className="mt-3">{error}</Alert>}
         </Modal.Body>
-        {error && <Alert variant="danger" className="mx-3">{error}</Alert>}
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Cancel
@@ -50,9 +50,8 @@ export default function CloseAccount() {
             onClick={(e) => void closeAccount(e)}
             disabled={loading}
           >
-            {loading ? "Closing…" : "Close Account"}
+            {loading ? "Closing…" : "Continue"}
           </Button>
-           {error && <Alert variant="danger">{error}</Alert>}
         </Modal.Footer>
       </Modal>
     </>

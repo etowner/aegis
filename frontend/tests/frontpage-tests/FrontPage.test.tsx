@@ -1,7 +1,7 @@
 import { render, screen } from '@tests/test-utils';
 import FrontPage from "@FrontPage/FrontPage";
 
-vi.mock('./AccountBox', () => ({
+vi.mock('@FrontPage/AccountBox', () => ({
   default: () => <div data-testid="account-box">Mocked AccountBox</div>,
 }));
 
@@ -12,7 +12,7 @@ describe("FrontPage", () => {
 
   test('renders the bank application heading', () => {
     expect(
-      screen.getByRole('heading', { name: /bank application/i })
+      screen.getByRole('heading', { name: /aegis/i })
     ).toBeInTheDocument();
   });
 
