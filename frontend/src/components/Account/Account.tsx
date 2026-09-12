@@ -1,4 +1,3 @@
-import { useEffect, useCallback, useState } from "react";
 import { Card, Col, Container, Row, Table, Tab, Tabs } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "@Header/Header";
@@ -6,38 +5,16 @@ import Deposit from "./Deposit";
 import Withdraw from "./Withdraw";
 import CloseAccount from "./CloseAccount";
 import LineChart from "./LineChart";
-import { getTransactions } from "@/api/transactionApi";
-import { getAccount } from "@/api/accountApi";
 import { formatCurrency, formatDate, formatTransfer } from "@/lib/utils";
-import type { Account, Transaction } from "@/lib/types";
-import { getAxiosError } from "@/api/axiosConfig";
 import "@/styles/Account.css";
+import { useAccountData } from "@/hooks/useAccountData";
 
 const isCredit = (type: string) => type.toLowerCase() === "deposit";
 
 const AccountPage = () => {
   const { accountNumber } = useParams<{ accountNumber: string }>();
-  const [account, setAccount] = useState<Account | null>(null);
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const { account, transactions, refetch } = useAccountData(accountNumber);
   const navigate = useNavigate();
-
-  const fetchAccountData = useCallback(async () => {
-    try {
-      const [acc, txns] = await Promise.all([
-        getAccount(accountNumber!),
-        getTransactions(accountNumber!),
-      ]);
-      setAccount(acc);
-      setTransactions(txns);
-    } catch (err) {
-      console.error("Failed to fetch account data:", getAxiosError(err));
-    }
-  }, [accountNumber]);
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    void fetchAccountData()
-  }, [fetchAccountData]);
 
   return (
     <div className="Account">
@@ -108,15 +85,13 @@ const AccountPage = () => {
                 <Tabs defaultActiveKey="deposit" className="mb-4" fill>
                   <Tab eventKey="deposit" title="Deposit">
                     <Deposit
-                      setAccount={setAccount}
-                      fetchAccountData={fetchAccountData}
+                      refetch={refetch}
                     />
                   </Tab>
                   <Tab eventKey="withdraw" title="Withdraw">
                     <Withdraw
                       balance={account?.balance}
-                      setAccount={setAccount}
-                      fetchAccountData={fetchAccountData}
+                      refetch={refetch}
                     />
                   </Tab>
                 </Tabs>

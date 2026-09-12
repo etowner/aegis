@@ -2,15 +2,13 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Alert, Button, Form, Row, Col } from "react-bootstrap";
 import { withdraw } from "@/api/transactionApi";
-import type { Account } from "@/lib/types";
 
 interface WithdrawProps {
   balance: number | undefined;
-  setAccount: (account: Account) => void;
-  fetchAccountData: () => Promise<void>;
+  refetch: () => Promise<void>;
 }
 
-export default function Withdraw({ balance, setAccount, fetchAccountData }: WithdrawProps) {
+export default function Withdraw({ balance, refetch }: WithdrawProps) {
   const { accountNumber } = useParams<{ accountNumber: string }>();
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
@@ -31,11 +29,10 @@ export default function Withdraw({ balance, setAccount, fetchAccountData }: With
 
     setLoading(true);
     try {
-      const updatedAccount = await withdraw(accountNumber!, parsedAmount);
+      await withdraw(accountNumber!, parsedAmount);
       setAmount("");
       setError(null);
-      setAccount(updatedAccount);
-      await fetchAccountData();
+      await refetch();
     } catch {
       setError("Withdrawal failed. Please try again.");
     } finally {

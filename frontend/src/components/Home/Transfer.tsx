@@ -1,48 +1,13 @@
-import { useState } from "react";
 import { Button, Card, Form, Alert } from "react-bootstrap";
-import { useUserContext } from "@/context/UserContext";
-import { transfer } from "@/api/transactionApi";
-import { getAxiosError } from "@/api/axiosConfig";
+import { useTransfer } from "@/hooks/useTransfer";
 
 export default function Transfer() {
-  const { fetchUser } = useUserContext();
-  const [amount, setAmount] = useState("");
-  const [accountNumber1, setAccountNumber1] = useState("");
-  const [accountNumber2, setAccountNumber2] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const handleTransferClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-
-    const parsedAmount = parseFloat(amount);
-    if (isNaN(parsedAmount) || parsedAmount <= 0) {
-      setError("Invalid transfer amount. Please enter a valid amount.");
-      return;
-    }
-    if (!accountNumber1 || !accountNumber2) {
-      setError("Please enter both account numbers.");
-      return;
-    }
-    if (accountNumber1 === accountNumber2) {
-      setError("Source and destination accounts must be different.");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      await transfer(accountNumber1, accountNumber2, parsedAmount);
-      setAmount("");
-      setAccountNumber1("");
-      setAccountNumber2("");
-      setError(null);
-      await fetchUser();
-    } catch (err) {
-      setError(getAxiosError(err));
-    } finally {
-      setLoading(false);
-    }
-  };
+  const {
+    amount, setAmount,
+    accountNumber1, setAccountNumber1,
+    accountNumber2, setAccountNumber2,
+    loading, error, handleTransfer,
+  } = useTransfer();
 
   return (
     <Card className="bank-card">
@@ -81,7 +46,7 @@ export default function Transfer() {
           <div className="transfer-card">
             <Button
               variant="dark"
-              onClick={(e) => void handleTransferClick(e)}
+              onClick={(e) => { e.preventDefault(); void handleTransfer(); } }
               disabled={loading}
             >
               {loading ? "Processing…" : "Transfer"}

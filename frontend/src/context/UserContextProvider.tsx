@@ -13,7 +13,6 @@ export const UserContextProvider = ({ children }: { children: React.ReactNode })
     try {
       const user = await getUser();
       setUser(user);
-      // console.log("Fetched user:", user);
     } catch (err) {
       console.error("Error getting user:", err, getAxiosError(err));
     }
