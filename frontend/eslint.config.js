@@ -10,7 +10,7 @@ import { defineConfig, globalIgnores } from "eslint/config";
 
 export default defineConfig([
   globalIgnores(["node_modules/", "dist/", "build/", "coverage/"]),
-  // TypeScript + React
+
   {
     files: ["**/*.{ts,tsx}"],
     extends: [
@@ -18,6 +18,7 @@ export default defineConfig([
       ...tseslint.configs.recommendedTypeChecked,
       ...tseslint.configs.stylisticTypeChecked,
       eslintReact.configs["recommended-typescript"],
+      reactRefresh.configs.vite
     ],
     languageOptions: {
       globals: globals.browser,
@@ -32,12 +33,6 @@ export default defineConfig([
       "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
       "@typescript-eslint/consistent-type-imports": "warn",
     },
-  },
-
-  // Vite fast refresh
-  {
-    files: ["**/*.{jsx,tsx}"],
-    extends: [reactRefresh.configs.vite],
   },
   reactHooks.configs.flat.recommended,
   eslintConfigPrettier,

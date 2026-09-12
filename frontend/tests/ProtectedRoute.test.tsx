@@ -3,8 +3,8 @@ import ProtectedRoute from '@/context/ProtectedRoute';
 import { render, screen } from "@tests/test-utils"
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
-vi.mock('./UserContext', async () => {
-    const actual = await vi.importActual('./UserContext');
+vi.mock('@/context/UserContext', async () => {
+    const actual = await vi.importActual('@/context/UserContext');
     return {
         ...actual,
         useUserContext: vi.fn(),

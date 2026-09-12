@@ -17,7 +17,7 @@ export default function Transfer() {
 
     const parsedAmount = parseFloat(amount);
     if (isNaN(parsedAmount) || parsedAmount <= 0) {
-      setError("Enter a valid amount.");
+      setError("Invalid transfer amount. Please enter a valid amount.");
       return;
     }
     if (!accountNumber1 || !accountNumber2) {

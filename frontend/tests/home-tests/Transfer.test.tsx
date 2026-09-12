@@ -42,16 +42,14 @@ describe("Transfer", () => {
 
     expect(screen.getByRole("heading", { name: "Transfer" })).toBeInTheDocument();
     
-    expect(screen.getByRole("heading", { name: "Transfer from:" })).toBeInTheDocument();
-    expect(screen.getByRole("textbox", { name: "Transfer from:" })).toHaveAttribute("value", "");
+    expect(screen.getByRole("textbox", { name: "From account" })).toHaveAttribute("value", "");
     
-    expect(screen.getByRole("heading", { name: "Transfer to:" })).toBeInTheDocument();
-    expect(screen.getByRole("textbox", { name: "Transfer to:" })).toHaveAttribute("value", "");
+    expect(screen.getByRole("textbox", { name: "To account" })).toHaveAttribute("value", "");
  
-    expect(screen.getByRole("heading", { name: "Transfer amount:" })).toBeInTheDocument();
-    // expect(screen.getByRole("spinbutton", { name: "Transfer amount:" })).toHaveAttribute("placeholder", "Enter amount");
+    expect(screen.getByRole("spinbutton", { name: "Amount" })).toBeInTheDocument();
+    // expect(screen.getByRole("spinbutton", { name: "Amount" })).toHaveAttribute("placeholder", "Enter amount");
     
-    expect(screen.getByRole("button", { name: "Submit" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /transfer/i })).toBeInTheDocument();
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   });
 
@@ -62,10 +60,10 @@ describe("Transfer", () => {
 
     render(<Transfer />);
 
-    await user.type(screen.getByRole("textbox", { name: "Transfer from:" }), mockTransfer.accountNumber1);
-    await user.type(screen.getByRole("textbox", { name: "Transfer to:" }), mockTransfer.accountNumber2);
-    await user.type(screen.getByRole("spinbutton", { name: "Transfer amount:" }), mockTransfer.amount.toString());
-    await user.click(screen.getByRole("button", { name: /submit/i }));
+    await user.type(screen.getByRole("textbox", { name: "From account" }), mockTransfer.accountNumber1);
+    await user.type(screen.getByRole("textbox", { name: "To account" }), mockTransfer.accountNumber2);
+    await user.type(screen.getByRole("spinbutton", { name: "Amount" }), mockTransfer.amount.toString());
+    await user.click(screen.getByRole("button", { name: /transfer/i }));
 
     expect(transfer).toHaveBeenCalledWith(
       mockTransfer.accountNumber1,
@@ -84,8 +82,8 @@ describe("Transfer", () => {
       const { fetchUser } = useUserContext();
       render(<Transfer />); 
 
-      await user.type(screen.getByRole("spinbutton", { name: "Transfer amount:" }), "-100");
-      await user.click(screen.getByRole("button", { name: /submit/i }));
+      await user.type(screen.getByRole("spinbutton", { name: "Amount" }), "-100");
+      await user.click(screen.getByRole("button", { name: /transfer/i }));
 
        expect(await screen.findByRole('alert')).toHaveTextContent("Invalid transfer amount. Please enter a valid amount.");
       expect(transfer).not.toHaveBeenCalled();
@@ -97,10 +95,10 @@ describe("Transfer", () => {
       const { fetchUser } = useUserContext();
       render(<Transfer />);
 
-      await user.type(screen.getByRole("textbox", { name: "Transfer from:" }), mockTransfer.accountNumber1);
-      await user.type(screen.getByRole("textbox", { name: "Transfer to:" }), mockTransfer.accountNumber1); 
-      await user.type(screen.getByRole("spinbutton", { name: "Transfer amount:" }), mockTransfer.amount.toString());
-      await user.click(screen.getByRole("button", { name: /submit/i }));
+      await user.type(screen.getByRole("textbox", { name: "From account" }), mockTransfer.accountNumber1);
+      await user.type(screen.getByRole("textbox", { name: "To account" }), mockTransfer.accountNumber1); 
+      await user.type(screen.getByRole("spinbutton", { name: "Amount" }), mockTransfer.amount.toString());
+      await user.click(screen.getByRole("button", { name: /transfer/i }));
       
       expect(await screen.findByRole('alert')).toHaveTextContent("Source and destination accounts must be different.");
       expect(transfer).not.toHaveBeenCalled();
@@ -112,11 +110,11 @@ describe("Transfer", () => {
       const { fetchUser } = useUserContext();
       render(<Transfer />);
 
-      await user.type(screen.getByRole("textbox", { name: "Transfer from:" }), mockTransfer.accountNumber1);
-      await user.type(screen.getByRole("spinbutton", { name: "Transfer amount:" }), mockTransfer.amount.toString());
-      await user.click(screen.getByRole("button", { name: /submit/i }));
+      await user.type(screen.getByRole("textbox", { name: "From account" }), mockTransfer.accountNumber1);
+      await user.type(screen.getByRole("spinbutton", { name: "Amount" }), mockTransfer.amount.toString());
+      await user.click(screen.getByRole("button", { name: /transfer/i }));
       
-      expect(await screen.findByRole('alert')).toHaveTextContent("Please enter both account IDs.");
+      expect(await screen.findByRole('alert')).toHaveTextContent("Please enter both account numbers.");
       expect(transfer).not.toHaveBeenCalled();
       expect(fetchUser).not.toHaveBeenCalled();
     });
@@ -129,10 +127,10 @@ describe("Transfer", () => {
 
       render(<Transfer />);
 
-      await user.type(screen.getByRole("textbox", { name: "Transfer from:" }), mockTransfer.accountNumber1);
-      await user.type(screen.getByRole("textbox", { name: "Transfer to:" }), mockTransfer.accountNumber2);
-      await user.type(screen.getByRole("spinbutton", { name: "Transfer amount:" }), mockTransfer.amount.toString());
-      await user.click(screen.getByRole("button", { name: /submit/i }));
+      await user.type(screen.getByRole("textbox", { name: "From account" }), mockTransfer.accountNumber1);
+      await user.type(screen.getByRole("textbox", { name: "To account" }), mockTransfer.accountNumber2);
+      await user.type(screen.getByRole("spinbutton", { name: "Amount" }), mockTransfer.amount.toString());
+      await user.click(screen.getByRole("button", { name: /transfer/i }));
 
       expect(await screen.findByRole('alert')).toHaveTextContent('Test error message');
       expect(fetchUser).not.toHaveBeenCalled();

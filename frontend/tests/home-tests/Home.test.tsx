@@ -21,22 +21,29 @@ const mockUserContext = {
 vi.mock('@/context/UserContext');
 vi.mock('@/api/accountApi');
 
-vi.mock('./PieChart', () => ({
+vi.mock("@Home/PieChart", () => ({
   default: () => <div data-testid="pie-chart">Mocked PieChart</div>,
 }));
 
-vi.mock("./Header",() => ({
+vi.mock("@Header/Header",() => ({
   default: () => <div data-testid="header">Mocked Header</div>,
 }));
 
-vi.mock("./AccountList.tsx", () => ({
+vi.mock("@Home/AccountList", () => ({
   default: () => <div data-testid="account-list">Mocked AccountList</div>,
 }));
 
-vi.mock("./Transfer.tsx", () => ({
+vi.mock("@Home/Transfer", () => ({
   default: () => <div data-testid="transfer">Mocked Transfer</div>,
 }));
-
+ 
+const renderHome = () => {
+  return render(
+    <MemoryRouter>
+        <Home />
+    </MemoryRouter>
+  );
+}
 
 describe("Home", () => {
     beforeEach(() => {
@@ -49,15 +56,15 @@ describe("Home", () => {
             vi.mocked(useUserContext).mockReturnValue(mockUserContext);
             const {fetchUser } = useUserContext();
             
-            render(<MemoryRouter><Home /></MemoryRouter>);
+            renderHome();
             
             await waitFor(() => expect(fetchUser).toHaveBeenCalled());
-            expect(screen.getByText(/Welcome testuser/i)).toBeInTheDocument();
+            expect(screen.getByText(/Welcome, testuser/i)).toBeInTheDocument();
         });
 
         it('renders each subcomponent', () => {
             vi.mocked(useUserContext).mockReturnValue(mockUserContext);
-            render(<MemoryRouter><Home /></MemoryRouter>);
+            renderHome();
             
             expect(screen.getByTestId("header")).toBeInTheDocument();
             expect(screen.getByTestId("account-list")).toBeInTheDocument();
@@ -72,7 +79,7 @@ describe("Home", () => {
     describe("openAcc function", () => {
         test("Open account button calls createAccount API", async () => {
             vi.mocked(useUserContext).mockReturnValue(mockUserContext);
-            render(<MemoryRouter><Home /></MemoryRouter>);
+           renderHome();
             
             await userEvent.click(screen.getByRole('button', { name: /checkings/i }));
             expect(createAccount).toHaveBeenCalledWith("Checkings");
@@ -82,7 +89,7 @@ describe("Home", () => {
         it("displays error when createAccount API fails", async () => {
             vi.mocked(useUserContext).mockReturnValue(mockUserContext);
             vi.mocked(createAccount).mockRejectedValue(new Error("API error"));
-            render(<MemoryRouter><Home /></MemoryRouter>);
+            renderHome();
             
             await userEvent.click(screen.getByRole('button', { name: /checkings/i }));
             
@@ -103,7 +110,7 @@ describe("Home", () => {
             };
             vi.mocked(useUserContext).mockReturnValue(userWithThreeAccounts);;
             
-            render(<MemoryRouter><Home /></MemoryRouter>);
+            renderHome();
             
            await userEvent.click(screen.getByRole('button', { name: /checkings/i }));
             
