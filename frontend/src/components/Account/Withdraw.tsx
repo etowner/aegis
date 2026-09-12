@@ -21,7 +21,7 @@ export default function Withdraw({ balance, setAccount, fetchAccountData }: With
     const parsedAmount = parseFloat(amount);
 
     if (isNaN(parsedAmount) || parsedAmount <= 0) {
-      setError("Enter a valid withdrawal amount.");
+      setError("Invalid withdrawal amount. Enter a valid withdrawal amount.");
       return;
     }
     if (balance === undefined || balance - parsedAmount < 0) {
@@ -64,7 +64,7 @@ export default function Withdraw({ balance, setAccount, fetchAccountData }: With
           onClick={(e) => void handleWithdrawClick(e)}
           disabled={loading}
         >
-          {loading ? "Processing…" : "Withdraw"}
+          {loading ? "Processing…" : "Confirm Withdrawal"}
         </Button>
       </div>
       {error && (

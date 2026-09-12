@@ -32,7 +32,7 @@ describe("Withdraw", () => {
   test("renders the withdraw form", () => {
     renderWithdraw();
     expect(screen.getByRole("spinbutton")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /submit/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /confirm withdrawal/i })).toBeInTheDocument();
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   });
 
@@ -41,7 +41,7 @@ describe("Withdraw", () => {
 
   
     await user.type(screen.getByRole("spinbutton"), "100.50");
-    await user.click(screen.getByRole("button", { name: /submit/i }));
+    await user.click(screen.getByRole("button", { name: /confirm withdrawal/i }));
     
     await waitFor(() => expect(withdraw).toHaveBeenCalledWith("1234567890", 100.50));
     expect(setAccount).toHaveBeenCalled();
@@ -52,10 +52,10 @@ describe("Withdraw", () => {
   test("shows an error for invalid withdraw amounts", async () => {
     const user = userEvent.setup();
 
-  renderWithdraw();
+    renderWithdraw();
 
     await user.type(screen.getByRole("spinbutton"), "600");
-    await user.click(screen.getByRole("button", { name: /submit/i }));
+    await user.click(screen.getByRole("button", { name: /confirm withdrawal/i }));
 
     expect(screen.getByRole("alert")).toHaveTextContent(/insufficient funds./i);
   });
@@ -66,7 +66,7 @@ describe("Withdraw", () => {
     renderWithdraw();
     
     await user.type(screen.getByRole("spinbutton"), "100");
-    await user.click(screen.getByRole("button", { name: /submit/i }));
+    await user.click(screen.getByRole("button", { name: /confirm withdrawal/i }));
 
     expect(await screen.findByRole("alert")).toHaveTextContent(/withdrawal failed. please try again./i);
   });

@@ -15,6 +15,7 @@ logs/
 *.tsbuildinfo
 .vite/
 .vitest/
+coverage/
 
 ### STS ###
 .apt_generated
@@ -47,12 +48,6 @@ build/
 node_modules
 /.pnp
 .pnp.js
-
-# testing
-/coverage
-
-# production
-/build
 
 # misc
 .DS_Store

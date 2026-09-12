@@ -37,7 +37,7 @@ describe("CloseAccount", () => {
     beforeEach(() => {
         vi.clearAllMocks();
         vi.mocked(useUserContext).mockReturnValue(mockUserContext);
-        // vi.mocked(getAxiosError).mockReturnValue('Test error message');
+        vi.mocked(getAxiosError).mockReturnValue('Test error message');
     });
 
     test("renders the CloseAccount component", () => {
@@ -62,19 +62,16 @@ describe("CloseAccount", () => {
 
         await waitFor(() => expect(deleteAccount).toHaveBeenCalledWith("1234567890"));
         await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith("/home"));
-        //await waitFor(() => expect(mockUserContext.fetchUser).toHaveBeenCalled());
     });
 
     test("displays an error message if deleteAccount fails", async () => {
-        const errorMessage = "Failed to delete account";
-        vi.mocked(deleteAccount).mockRejectedValueOnce(new Error(errorMessage));
-        
+        vi.mocked(deleteAccount).mockRejectedValueOnce(new Error("Test error message"));
         renderCloseAccount();
         await user.click(screen.getByRole("button", { name: /close account/i }));
         await user.click(screen.getByRole("button", { name: /continue/i }));
 
         await waitFor(() => expect(deleteAccount).toHaveBeenCalledWith("1234567890"));
-        expect(await screen.findByRole("alert")).toHaveTextContent(errorMessage);
+        expect(await screen.findByRole("alert")).toHaveTextContent("Test error message");
     });
 
 })

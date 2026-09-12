@@ -47,7 +47,6 @@ describe("Transfer", () => {
     expect(screen.getByRole("textbox", { name: "To account" })).toHaveAttribute("value", "");
  
     expect(screen.getByRole("spinbutton", { name: "Amount" })).toBeInTheDocument();
-    // expect(screen.getByRole("spinbutton", { name: "Amount" })).toHaveAttribute("placeholder", "Enter amount");
     
     expect(screen.getByRole("button", { name: /transfer/i })).toBeInTheDocument();
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();

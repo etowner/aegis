@@ -1,4 +1,4 @@
-import { logRoles, render, screen } from '@tests/test-utils';
+import { render, screen } from '@tests/test-utils';
 import userEvent from "@testing-library/user-event";
 import { deleteUser, logoutUser } from "@/api/userApi";
 import { deleteAllAccounts } from "@/api/accountApi";
@@ -95,7 +95,6 @@ describe("ProfileManager", () => {
     await renderOffcanvas();
 
     await user.click(screen.getByRole("button", { name: /change username/i }));
-    // logRoles(screen.getAllByRole("dialog", { hidden: false })[1]);
     expect(screen.getByTestId("change-username")).toBeInTheDocument();
   });
 

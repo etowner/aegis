@@ -5,7 +5,7 @@ import { getTransactions } from "@/api/transactionApi";
 import { getAccount } from "@/api/accountApi";
 import { getAxiosError } from "@/api/axiosConfig";
 import { formatCurrency, formatDate } from '@/lib/utils';
-import { logRoles, render, screen, waitFor } from '@tests/test-utils';
+import { render, screen, waitFor } from '@tests/test-utils';
 import type { Account, Transaction } from "@/lib/types";
 
 const mockNavigate = vi.fn();
@@ -59,13 +59,6 @@ const mockTransactions: Transaction[] = [
 }
 ];
 
-it('debug roles', () => {
-  const { container } = render( <MemoryRouter initialEntries={["/account/1234567890"]}>
-      <AccountPage />
-    </MemoryRouter>)
-  logRoles(container)
-})
-
 const renderAccountPage = async () => {
   render(
     <MemoryRouter initialEntries={["/account/1234567890"]}>
@@ -94,7 +87,6 @@ describe("AccountPage", () => {
     expect(screen.getByRole("heading", { name: `Transaction History` })).toBeInTheDocument();
     const isCredit = (type: string) => type.toLowerCase() === "deposit";
     
-    // Check if transactions are displayed
     expect(screen.getByRole("table")).toBeInTheDocument();
     mockTransactions.forEach((txn) => {
       expect(screen.getByRole("cell", { name: txn.type })).toBeInTheDocument();

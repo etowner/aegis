@@ -1,4 +1,4 @@
-import { render, screen, waitFor, within, logRoles } from '@tests/test-utils';
+import { render, screen, waitFor, within } from '@tests/test-utils';
 import AccountBox from "@FrontPage/AccountBox";
 import { MemoryRouter } from 'react-router-dom';
 import { userEvent } from '@testing-library/user-event';
@@ -36,8 +36,7 @@ describe("AccountBox", () => {
 
   test('renders form elements', () => {
     renderAccountBox();
-    // expect(screen.getByLabelText(/ username/i)).toBeInTheDocument();
-    // expect(screen.getByLabelText(/enter password/i)).toBeInTheDocument();
+
     expect(within(getCreatePanel()).getByRole('textbox', { name: /username/i })).toBeInTheDocument();
     expect(within(getCreatePanel()).getByRole('button', { name: /create account/i })).toBeInTheDocument();
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
@@ -76,14 +75,6 @@ describe("AccountBox", () => {
     vi.mocked(getAxiosError).mockReturnValue('Test error message');
   });
 
-  it('debug roles', () => {
-  const { container } = renderAccountBox();
-  logRoles(container)
-})
-it('debug panel roles', () => {
-  const { container } = renderAccountBox();
-  logRoles(getCreatePanel())
-})
 
     it('calls registerUser with the typed credentials', async () => {
       const user = userEvent.setup();
@@ -91,7 +82,6 @@ it('debug panel roles', () => {
       renderAccountBox();
     
       const panel = getCreatePanel();
-      screen.debug(panel);
       await user.type(within(panel).getByRole('textbox', { name: /username/i }), 'alice');
       await user.type(within(panel).getByLabelText(/password/i), 'secret99');
       await user.click(within(panel).getByRole('button', { name: /create account/i }));
@@ -135,7 +125,6 @@ it('debug panel roles', () => {
       await user.click(screen.getByRole('tab', { name: /log in/i }));
 
       const panel = getLoginPanel();
-      screen.debug(panel);
       await user.type(within(panel).getByRole('textbox', { name: /username/i }), 'bob');
       await user.type(within(panel).getByLabelText(/password/i), 'hunter2');
       await user.click(within(panel).getByRole('button', { name: /log in/i }));

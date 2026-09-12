@@ -20,7 +20,7 @@ export default function Deposit({ setAccount, fetchAccountData }: DepositProps) 
     const parsedAmount = parseFloat(amount);
 
     if (isNaN(parsedAmount) || parsedAmount <= 0) {
-      setError("Enter a valid deposit amount.");
+      setError("Invalid deposit amount");
       return;
     }
 
@@ -60,7 +60,7 @@ export default function Deposit({ setAccount, fetchAccountData }: DepositProps) 
               onClick={(e) => void handleDepositClick(e)}
               disabled={loading}
             >
-              {loading ? "Processing…" : "Confirm"}
+              {loading ? "Processing…" : "Confirm Deposit"}
             </Button>
           </div>
           {error && (
