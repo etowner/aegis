@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, Col, Container, Row, Alert } from "react-bootstrap";
 import Transfer from "@Dashboard/Transfer";
 import AccountList from "@Dashboard/AccountList";
-import Header from "@Navbar/Header";
+import Header from "@/components/Navbar/Header";
 import OpenAccount from "@Dashboard/OpenAccount";
 import PieChart from "@Dashboard/PieChart";
 import { useUserContext } from "@/context/UserContext";
