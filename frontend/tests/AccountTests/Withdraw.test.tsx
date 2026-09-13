@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@tests/test-utils';
+import { render, screen, waitFor } from '@tests/testUtils';
 import userEvent from "@testing-library/user-event";
 import Withdraw from "@account/Withdraw";
 import { withdraw } from "@/api/transactionApi";

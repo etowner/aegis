@@ -1,4 +1,4 @@
-import { render, screen } from '@tests/test-utils';
+import { render, screen } from '@tests/testUtils';
 import { MemoryRouter } from "react-router-dom";
 import AccountList from "@/components/Dashboard/AccountList";
 

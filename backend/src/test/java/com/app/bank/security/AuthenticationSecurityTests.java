@@ -6,12 +6,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.app.bank.api.AccountController;
-import com.app.bank.api.UserController;
+import com.app.bank.controllers.AccountController;
+import com.app.bank.controllers.UserController;
 import com.app.bank.dto.response.UserResponse;
 import com.app.bank.model.User;
 import com.app.bank.service.AccountService;
-import com.app.bank.service.ManagementService;
+import com.app.bank.service.UserManagementService;
 import com.app.bank.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +39,7 @@ public class AuthenticationSecurityTests {
     private AuthenticationManager authenticationManager;
 
     @MockitoBean
-    private ManagementService managementService;
+    private UserManagementService managementService;
 
     @MockitoBean
     private DatabaseUserDetailsService userDetailsService;

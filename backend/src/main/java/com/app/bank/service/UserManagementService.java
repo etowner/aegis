@@ -5,11 +5,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class ManagementService {
+public class UserManagementService {
     private final UserService userService;
     private final AccountService accountService;
     
-    public ManagementService(UserService userService, AccountService accountService) {
+    public UserManagementService(UserService userService, AccountService accountService) {
         this.userService = userService;
         this.accountService = accountService;
     }

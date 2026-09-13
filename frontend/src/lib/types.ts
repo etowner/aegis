@@ -17,5 +17,4 @@ interface Transaction {
     counterparty: string;
     timestamp: string;
 }
-
 export type { User, Account, Transaction };

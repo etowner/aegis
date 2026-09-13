@@ -20,10 +20,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @SpringBootTest
-public class TransferTransactionTest {
+public class TransferRollbackTests {
 
     @Autowired
-    private ManagementService managementService;
+    private UserManagementService managementService;
 
     @Autowired
     private AccountService accountService;

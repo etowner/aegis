@@ -1,4 +1,4 @@
-package com.app.bank.api;
+package com.app.bank.controllers;
 
 import com.app.bank.dto.response.TransactionResponse;
 import com.app.bank.security.UserPrincipal;

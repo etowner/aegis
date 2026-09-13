@@ -1,6 +1,6 @@
 import { Card, Col, Container, Row, Table, Tab, Tabs } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
-import Header from "@NavBar/Header";
+import Header from "@/components/Navbar/Header";
 import Deposit from "@Account/Deposit";
 import Withdraw from "@Account/Withdraw";
 import CloseAccount from "@Account/CloseAccount";

@@ -1,4 +1,4 @@
-package com.app.bank.api;
+package com.app.bank.controllers;
 
 import com.app.bank.dto.request.*;
 import com.app.bank.dto.response.AccountResponse;

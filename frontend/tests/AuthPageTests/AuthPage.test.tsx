@@ -1,4 +1,4 @@
-import { render, screen } from '@tests/test-utils';
+import { render, screen } from '@tests/testUtils';
 import FrontPage from "@/pages/AuthPage";
 
 vi.mock('@FrontPage/AccountBox', () => ({

@@ -15,7 +15,7 @@ export default defineConfig({
       '@Dashboard': '/src/components/Dashboard',
       '@Account': '/src/components/Account',
       '@Auth': '/src/components/Auth',
-      "@NavBar": "/src/components/NavBar",
+      "@Navbar": "/src/components/Navbar",
     },
   },
   test: {

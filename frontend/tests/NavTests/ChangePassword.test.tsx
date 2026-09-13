@@ -1,7 +1,7 @@
-import ChangePassword from "@/components/NavBar/ChangePassword";
+import ChangePassword from "@/components/Navbar/ChangePassword";
 import { changePassword } from "@/api/userApi";
 import { getAxiosError } from "@/api/axiosConfig";
-import { render, screen } from "@tests/test-utils";
+import { render, screen } from "@tests/testUtils";
 import userEvent from "@testing-library/user-event";
 
 vi.mock("@/api/userApi");

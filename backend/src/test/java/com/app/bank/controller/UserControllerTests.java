@@ -1,4 +1,4 @@
-package com.app.bank.api;
+package com.app.bank.controller;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import com.app.bank.controllers.UserController;
 import com.app.bank.dto.request.LoginRequest;
 import com.app.bank.dto.request.RegisterRequest;
 import com.app.bank.dto.response.UserResponse;
@@ -17,7 +18,7 @@ import com.app.bank.model.User;
 import com.app.bank.security.DatabaseUserDetailsService;
 import com.app.bank.security.SecurityConfig;
 import com.app.bank.security.UserPrincipal;
-import com.app.bank.service.ManagementService;
+import com.app.bank.service.UserManagementService;
 import com.app.bank.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -46,7 +47,7 @@ public class UserControllerTests {
         private UserService userService;
 
         @MockitoBean
-        private ManagementService managementService;
+        private UserManagementService managementService;
 
         @MockitoBean
         private AuthenticationManager authenticationManager;

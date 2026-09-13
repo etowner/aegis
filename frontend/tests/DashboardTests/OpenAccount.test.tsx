@@ -1,4 +1,4 @@
-import { render, screen } from '@tests/test-utils';
+import { render, screen } from '@tests/testUtils';
 import userEvent from "@testing-library/user-event";
 import OpenAccount from "@/components/Dashboard/OpenAccount";
 

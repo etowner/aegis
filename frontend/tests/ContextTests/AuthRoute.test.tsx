@@ -1,6 +1,6 @@
 import { useUserContext } from '@/context/UserContext';
 import ProtectedRoute from '@context/AuthRoute';
-import { render, screen } from "@tests/test-utils"
+import { render, screen } from "@tests/testUtils"
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 vi.mock('@/context/UserContext', async () => {

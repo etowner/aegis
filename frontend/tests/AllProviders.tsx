@@ -1,6 +1,6 @@
 import { UserContextProvider } from "@/context/UserContextProvider";
 import { ThemeProvider } from "@/context/ThemeContextProvider";
-import { applyTheme, getStoredTheme } from "@/lib/theme";
+import { applyTheme, getStoredTheme } from "@/lib/themeUtils";
 import { useEffect } from "react";
 
 

@@ -1,9 +1,9 @@
-package com.app.bank.api;
+package com.app.bank.controllers;
 
 import com.app.bank.dto.request.*;
 import com.app.bank.dto.response.UserResponse;
 import com.app.bank.security.UserPrincipal;
-import com.app.bank.service.ManagementService;
+import com.app.bank.service.UserManagementService;
 import com.app.bank.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -28,11 +28,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserService userService;
-    private final ManagementService managementService;
+    private final UserManagementService managementService;
     private final AuthenticationManager authenticationManager;
 
     public UserController(UserService userService, AuthenticationManager authenticationManager,
-            ManagementService managementService) {
+            UserManagementService managementService) {
         this.userService = userService;
         this.managementService = managementService;
         this.authenticationManager = authenticationManager;

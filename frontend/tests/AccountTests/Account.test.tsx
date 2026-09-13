@@ -5,7 +5,7 @@ import { getTransactions } from "@/api/transactionApi";
 import { getAccount } from "@/api/accountApi";
 import { getAxiosError } from "@/api/axiosConfig";
 import { formatCurrency, formatDate } from '@/lib/utils';
-import { render, screen, waitFor } from '@tests/test-utils';
+import { render, screen, waitFor } from '@tests/testUtils';
 import type { Account, Transaction } from "@/lib/types";
 
 const mockNavigate = vi.fn();

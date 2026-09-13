@@ -1,4 +1,4 @@
-# 🏦 Bank Application
+# 🏦 Aegis
 
 A full-stack banking web application built with **Spring Boot**, **React and Vite**, and **MongoDB Atlas** — featuring account management, secure authentication, real-time transactions, and data visualization.
 
@@ -62,11 +62,11 @@ A full-stack banking web application built with **Spring Boot**, **React and Vit
 ### Clone Repository
 
 ```bash
-git clone https://github.com/etowner/bank_app.git
-cd bank_app
+git clone https://github.com/etowner/aegis.git
+cd aegis
 ```
 
-### Create secrets.properties (`bank_app/backend/secrets.properties`)
+### Create secrets.properties (`aegis/backend/secrets.properties`)
 
 ```text
 MONGO_DATABASE=your_mongo_database
@@ -138,7 +138,7 @@ The frontend will start on **<http://localhost:5173>** and use Axios for API req
 ## Project Structure
 
 ```text
-bank_app/
+aegis/
 ├── backend/              # Spring Boot application
 │   ├── src/main/
 │   │   ├── java/         # Application source code

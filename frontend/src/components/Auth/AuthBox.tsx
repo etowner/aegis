@@ -1,8 +1,4 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Alert, Button, Form, Tab, Tabs, Card } from "react-bootstrap";
-import { registerUser, loginUser } from "@/api/userApi";
-import { getAxiosError } from "@/api/axiosConfig";
 import { useAuth } from "@/hooks/useAuth";
 import "@/styles/Auth.css";
 interface AuthFormProps {
