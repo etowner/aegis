@@ -17,8 +17,9 @@ export const UserContextProvider = ({ children }: { children: React.ReactNode })
       console.error("Error getting user:", err, getAxiosError(err));
     }
   }, []);
-
-  const username = user?.username ?? null; // Extract username from user object for easier access
+  
+  // Extract username from user object for easier access
+  const username = user?.username ?? null; 
   
   return (
     <UserContext value={{ username, user, setUser, fetchUser }}>

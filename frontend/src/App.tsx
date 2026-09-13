@@ -1,19 +1,19 @@
-import "./styles/index.css";
+import "@/styles/index.css";
 import { Routes, Route } from "react-router-dom";
-import FrontPage from "@FrontPage/FrontPage";
-import Home from "@Home/Home";
-import Account from "@Account/Account";
+import AuthPage from "@/pages/AuthPage";
+import Dashboard from "@/pages/Dashboard";
+import Account from "@/pages/Account";
 import { UserContextProvider } from "./context/UserContextProvider";
-import ProtectedRoute from "./context/ProtectedRoute";
+import AuthRoute from "./context/AuthRoute";
 
 function App() {
   return (
     <div className="App">
       <UserContextProvider>
         <Routes>
-          <Route path="/" element={<FrontPage />} />
-          <Route element={<ProtectedRoute />}>
-            <Route path="/home" element={<Home />} />
+          <Route path="/" element={<AuthPage />} />
+          <Route element={<AuthRoute />}>
+            <Route path="/home" element={<Dashboard />} />
             <Route path="/account/:accountNumber" element={ <Account />} />
           </Route>
         </Routes>

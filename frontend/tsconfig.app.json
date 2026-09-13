@@ -9,11 +9,11 @@
     "types": ["vitest/globals", "vite/client"],
 
     "paths": {
-      "@/*": ["./src/*"],
-      "@Header/*": ["./src/components/Header/*"],
-      "@Home/*": ["./src/components/Home/*"],
-      "@Account/*": ["./src/components/Account/*"],
-      "@FrontPage/*": ["./src/components/FrontPage/*"],
+      "@*": ["./src/*"],
+      "@nav/*": ["./src/components/NavBar/*"],
+      "@dash/*": ["./src/components/Dashboard/*"],
+      "@account/*": ["./src/components/Account/*"],
+      "@auth/*": ["./src/components/Auth/*"],
       "@tests/*": ["./tests/*"]
     },
 
