@@ -1,10 +1,10 @@
 import { Card, Col, Container, Row, Table, Tab, Tabs } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
-import Header from "@nav/Header";
-import Deposit from "@account/Deposit";
-import Withdraw from "@account/Withdraw";
-import CloseAccount from "@account/CloseAccount";
-import LineChart from "@account/LineChart";
+import Header from "@NavBar/Header";
+import Deposit from "@Account/Deposit";
+import Withdraw from "@Account/Withdraw";
+import CloseAccount from "@Account/CloseAccount";
+import LineChart from "@Account/LineChart";
 import { formatCurrency, formatDate, formatTransfer } from "@/lib/utils";
 import "@/styles/Account.css";
 import { useAccountData } from "@/hooks/useAccountData";

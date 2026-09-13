@@ -37,7 +37,7 @@
 }
 
 /* ── Login card ─────────────────────────────────────────────── */
-.auth-box {
+.account-box {
   width: min(35rem, 90vw);
   border: none !important;
   border-top: 3px solid var(--color-gold) !important;
@@ -47,7 +47,7 @@
 }
 
 
-.auth-box .nav-tabs {
+.account-box .nav-tabs {
   --bs-nav-tabs-link-active-color:        var(--color-text-primary);
   --bs-nav-tabs-link-active-border-color: var(--color-text-primary)
                                           var(--color-text-primary)
@@ -57,21 +57,21 @@
   --bs-body-bg:                           var(--color-card);
 }
 
-.auth-box .card-body {
+.account-box .card-body {
   border-radius: var(--radius-card) !important;
   background-color: var(--color-card);
 }
 
-.auth-box .form-control {
+.account-box .form-control {
   justify-self: center;
 }
 
-.auth-box .form-control:focus {
+.account-box .form-control:focus {
   border-color: var(--color-primary);
   box-shadow: 0 0 0 0.2rem rgba(var(--color-primary-rgb), 0.2);
 }
 
-.auth-box .btn {
+.account-box .btn {
   --bs-btn-bg:                  var(--color-primary);
   --bs-btn-border-color:        var(--color-primary);
   --bs-btn-color:               var(--color-text-on-dark);

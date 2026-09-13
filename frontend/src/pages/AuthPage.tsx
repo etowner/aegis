@@ -1,6 +1,6 @@
-import AuthBox from "@auth/AuthBox";
-import ThemeToggle from "@nav/ThemeToggle";
-import "@/styles/FrontPage.css";
+import AuthBox from "@Auth/AuthBox";
+import ThemeToggle from "@NavBar/ThemeToggle";
+import "@/styles/Auth.css";
 
 const AuthPage = () => (
   <div className="AuthPage">

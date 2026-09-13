@@ -12,10 +12,10 @@ export default defineConfig({
     alias: {
       '@': '/src',
       '@tests': '/tests',
-      '@Header': '/src/components/Header',
-      '@Home': '/src/components/Home',
+      '@Dashboard': '/src/components/Dashboard',
       '@Account': '/src/components/Account',
-      '@FrontPage': '/src/components/FrontPage',
+      '@Auth': '/src/components/Auth',
+      "@NavBar": "/src/components/NavBar",
     },
   },
   test: {

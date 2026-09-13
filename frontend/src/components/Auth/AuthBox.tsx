@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Alert, Button, Form, Tab, Tabs, Card } from "react-bootstrap";
 import { registerUser, loginUser } from "@/api/userApi";
 import { getAxiosError } from "@/api/axiosConfig";
-
+import { useAuth } from "@/hooks/useAuth";
+import "@/styles/Auth.css";
 interface AuthFormProps {
   idPrefix: string; 
   onSubmit: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -59,76 +60,32 @@ const AuthForm = ({
 );
 
 const AuthBox = () => {
-  const [error, setError] = useState<string | null>(null);
-  const [username, setUsername] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [activeTab, setActiveTab] = useState<string>("create");
-  const navigate = useNavigate();
-  
-  const register = async (username: string, password: string) => {
-    setError(null);
-    try {
-      await registerUser(username, password);
-    } catch (err) {
-      setError(getAxiosError(err));
-      console.error("Registration error:", err);
-      return; 
-    }
-    void navigate(`/home`);
-  };
-
-  const login = async (username: string, password: string) => {
-    setError(null);
-    try {
-      await loginUser(username, password );
-    } catch (err) {
-      setError(getAxiosError(err));
-      console.error("Login error:", err);
-      return; 
-    }
-    void navigate(`/home`);
-  };
-
-  const handleCreate = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    void register(username, password);
-  };
-
-  const handleLog = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    void login(username, password);
-  };
-
-  const handleTabSwitch = (tab: string | null) => {
-    if (tab == null) return;
-    setActiveTab(tab);
-    setError(null);
-  };
+  const {
+    error, username, password, activeTab,
+    setUsername, setPassword,
+    handleCreate, handleLog, handleTabSwitch,
+  } = useAuth();
 
   return (
-    <Card className="account-box">
+  <Card className="account-box">
       <Card.Body className="p-4">
         <Tabs activeKey={activeTab} onSelect={handleTabSwitch} unmountOnExit className="mb-4" fill>
           <Tab eventKey="create" title="Create Account">
             <AuthForm idPrefix="create"
-              onSubmit={handleCreate}
-              username={username}
-              password={password}
+              onSubmit={(e) => void handleCreate(e)}
+              username={username} password={password}
               onUsernameChange={(e) => setUsername(e.target.value)}
               onPasswordChange={(e) => setPassword(e.target.value)}
-              error={error}
-              isLogin={false}
+              error={error} isLogin={false}
             />
           </Tab>
           <Tab eventKey="log" title="Log In">
             <AuthForm idPrefix="log"
-              onSubmit={handleLog}
-              username={username}
-              password={password}
+              onSubmit={(e) => void handleLog(e)}
+              username={username} password={password}
               onUsernameChange={(e) => setUsername(e.target.value)}
               onPasswordChange={(e) => setPassword(e.target.value)}
-              error={error}
-              isLogin={true}
+              error={error} isLogin={true}
             />
           </Tab>
         </Tabs>

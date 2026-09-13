@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Card, Col, Container, Row, Alert } from "react-bootstrap";
-import Transfer from "@dash/Transfer";
-import AccountList from "@dash/AccountList";
-import Header from "@nav/Header";
-import OpenAccount from "@dash/OpenAccount";
-import PieChart from "@dash/PieChart";
+import Transfer from "@Dashboard/Transfer";
+import AccountList from "@Dashboard/AccountList";
+import Header from "@NavBar/Header";
+import OpenAccount from "@Dashboard/OpenAccount";
+import PieChart from "@Dashboard/PieChart";
 import { useUserContext } from "@/context/UserContext";
 import { createAccount } from "@/api/accountApi";
-import "@/styles/Home.css";
+import "@/styles/Dashboard.css";
 
 const Dashboard = () => {
   const { user, username, fetchUser } = useUserContext();
@@ -34,10 +34,10 @@ const Dashboard = () => {
   }, [fetchUser]);
 
   return (
-    <div className="Home">
+    <div className="Dashboard">
       <Header />
       <Container className="py-4">
-        <div className="home-welcome mb-4">
+        <div className="dashboard-welcome mb-4">
           Welcome, {username}
         </div>
         <Row xs={1} md={2} className="g-4">
