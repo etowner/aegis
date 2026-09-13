@@ -5,14 +5,14 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import com.app.bank.api.AccountController;
-import com.app.bank.api.UserController;
+
+import com.app.bank.controllers.AccountController;
+import com.app.bank.controllers.UserController;
 import com.app.bank.dto.response.UserResponse;
 import com.app.bank.model.User;
 import com.app.bank.service.AccountService;
-import com.app.bank.service.ManagementService;
+import com.app.bank.service.UserManagementService;
 import com.app.bank.service.UserService;
-import tools.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -21,6 +21,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import tools.jackson.databind.ObjectMapper;
 
 @WebMvcTest({ UserController.class, AccountController.class })
 @Import(SecurityConfig.class)
@@ -38,7 +39,7 @@ public class AuthenticationSecurityTests {
     private AuthenticationManager authenticationManager;
 
     @MockitoBean
-    private ManagementService managementService;
+    private UserManagementService managementService;
 
     @MockitoBean
     private DatabaseUserDetailsService userDetailsService;

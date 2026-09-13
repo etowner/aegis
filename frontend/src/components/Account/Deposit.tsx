@@ -2,14 +2,12 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Alert, Button, Form, Row, Col } from "react-bootstrap";
 import { deposit } from "@/api/transactionApi";
-import type { Account } from "@/lib/types";
 
 interface DepositProps {
-  setAccount: (account: Account) => void;
-  fetchAccountData: () => Promise<void>;
+  refetch: () => Promise<void>;
 }
 
-export default function Deposit({ setAccount, fetchAccountData }: DepositProps) {
+export default function Deposit({ refetch }: DepositProps) {
   const { accountNumber } = useParams<{ accountNumber: string }>();
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
@@ -20,17 +18,16 @@ export default function Deposit({ setAccount, fetchAccountData }: DepositProps) 
     const parsedAmount = parseFloat(amount);
 
     if (isNaN(parsedAmount) || parsedAmount <= 0) {
-      setError("Enter a valid deposit amount.");
+      setError("Invalid deposit amount");
       return;
     }
 
     setLoading(true);
     try {
-      const updatedAccount = await deposit(accountNumber!, parsedAmount);
+      await deposit(accountNumber!, parsedAmount);
       setAmount("");
       setError(null);
-      setAccount(updatedAccount);
-      await fetchAccountData();
+      await refetch();
     } catch (error) {
       setError("Deposit failed. Please try again.");
       console.error(error);
@@ -60,7 +57,7 @@ export default function Deposit({ setAccount, fetchAccountData }: DepositProps) 
               onClick={(e) => void handleDepositClick(e)}
               disabled={loading}
             >
-              {loading ? "Processing…" : "Confirm"}
+              {loading ? "Processing…" : "Confirm Deposit"}
             </Button>
           </div>
           {error && (

@@ -1,9 +1,8 @@
 import api from './axiosConfig';
-import type { Account, Transaction } from '../lib/types';
+import type { Account, Transaction } from '@/lib/types';
 
 export const getTransactions = async (accountNumber: string) => {
   const response = await api.get<Transaction[]>(`/api/v1/account/${accountNumber}/transactions`);
-//   console.log("getTransactions response:", response);
   return response.data;
 };
 

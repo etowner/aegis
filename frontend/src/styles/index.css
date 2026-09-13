@@ -54,6 +54,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
+.App {
+  min-height: 100vh;
+}
+
 /* ─── Shared component classes ──────────────────────────────── */
 
 .card-header-primary {
@@ -94,23 +98,6 @@ code {
   margin: 0 auto;
 }
 
-/* -- Header ------- */
-.navbar .navbar-brand {
-  color: var(--color-gold);
-  font-size: 2rem;
-  font-weight: 700;
-  padding-left: 5rem;
-}
-
-.navbar.navbar-dark {
-  background-color: var(--color-primary);
-  border-bottom: 3px solid var(--color-gold);
-}
-
-.theme-toggle .bi {
-  color: var(--color-gold);
-  font-size: 1.25rem;
-}
 
 /* ── Bootstrap .btn-dark override ─────────────────────────────────── */
 .transfer-card .btn-dark,

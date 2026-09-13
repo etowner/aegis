@@ -1,9 +1,9 @@
 import {  useState, useCallback } from "react";
-import { applyTheme, getInitialTheme } from "../lib/theme";
+import { applyTheme, getStoredTheme } from "@/lib/themeUtils";
 import { ThemeContext } from "./ThemeContext";
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [dark, setDark] = useState<boolean>(() => getInitialTheme() === "dark");
+  const [dark, setDark] = useState<boolean>(() => getStoredTheme() === "dark");
 
   const toggleTheme = useCallback(() => {
     setDark((prev) => {
