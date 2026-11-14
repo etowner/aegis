@@ -1,5 +1,5 @@
 import { useUserContext } from '@/context/UserContext';
-import ProtectedRoute from '@context/AuthRoute';
+import ProtectedRoute from '@/context/AuthRoute';
 import { render, screen } from "@tests/testUtils"
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 

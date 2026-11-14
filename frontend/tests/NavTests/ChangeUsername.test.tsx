@@ -1,4 +1,4 @@
-import ChangeUsername from "@/components/Navbar/ChangeUsername";
+import ChangeUsername from "@/components/NavBar/ChangeUsername";
 import { changeUsername } from "@/api/userApi";
 import { getAxiosError } from "@/api/axiosConfig";
 import { render, screen } from "@tests/testUtils";

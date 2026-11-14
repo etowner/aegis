@@ -1,5 +1,5 @@
 import AuthBox from "@Auth/AuthBox";
-import ThemeToggle from "@/components/Navbar/ThemeToggle";
+import ThemeToggle from "@/components/NavBar/ThemeToggle";
 import "@/styles/Auth.css";
 
 const AuthPage = () => (

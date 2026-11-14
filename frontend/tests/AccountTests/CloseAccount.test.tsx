@@ -3,7 +3,7 @@ import {getAxiosError} from "@/api/axiosConfig";
 import { userEvent } from '@testing-library/user-event';
 import { MemoryRouter } from "react-router-dom";
 import { render, screen, waitFor } from '@tests/testUtils';
-import CloseAccount from "@account/CloseAccount";
+import CloseAccount from "@Account/CloseAccount";
 import { useUserContext } from "@/context/UserContext";
 
 vi.mock("@/api/accountApi");
