@@ -39,19 +39,9 @@ jobs:
 
       - name: Typecheck and build
         run: pnpm build
-
-      # NOT `pnpm test` — that script is bare `vitest`, which is watch mode and
-      # would hang the runner until it times out.
-      #
-      # Coverage is off here on purpose, for now. @vitest/coverage-v8@5.0.1 is
-      # installed against vitest@4.1.11; the provider's peer range is
-      # `vitest: '>= 0.32'`, so the major bump raised no conflict, but v5's
-      # provider fails with "coverageFilesDirectory is required" under a v4
-      # runner and buries every real result. Restore `pnpm coverage` once the
-      # pair is aligned (pin coverage-v8 to ^4, or do the planned vitest 5
-      # upgrade).
+        
       - name: Tests
-        run: pnpm exec vitest run
+        run: pnpm coverage
 
   backend:
     name: Backend

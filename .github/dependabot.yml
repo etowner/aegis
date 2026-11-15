@@ -9,6 +9,12 @@ updates:
     directory: "/frontend" 
     schedule:
       interval: "daily" 
+    groups: # Instruct Dependabot to group certain dependencies together in a single pull request
+      vitest:
+        patterns:
+          - "vitest"
+          - "@vitest/*"
+  
   - package-ecosystem: "maven"
     directory: "/backend"
     schedule:
