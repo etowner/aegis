@@ -22,14 +22,20 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
+        with:
+          package_json_file: frontend/package.json
        
       - uses: actions/setup-node@v7
         with:
+          node-version: 26
           cache: pnpm
           cache-dependency-path: frontend/pnpm-lock.yaml
 
       - name: Install
         run: pnpm install --frozen-lockfile
+      
+      - name: Peer dependencies
+        run: pnpm peers check
 
       - name: Lint
         run: pnpm lint
@@ -37,18 +43,9 @@ jobs:
       - name: Typecheck and build
         run: pnpm build
 
-      # NOT `pnpm test` — that script is bare `vitest`, which is watch mode and
-      # would hang the runner until it times out.
-      #
-      # Coverage is off here on purpose, for now. @vitest/coverage-v8@5.0.1 is
-      # installed against vitest@4.1.11; the provider's peer range is
-      # `vitest: '>= 0.32'`, so the major bump raised no conflict, but v5's
-      # provider fails with "coverageFilesDirectory is required" under a v4
-      # runner and buries every real result. Restore `pnpm coverage` once the
-      # pair is aligned (pin coverage-v8 to ^4, or do the planned vitest 5
-      # upgrade).
+        # NOT pnpm test, it's watch mode
       - name: Tests
-        run: pnpm exec vitest run
+        run: pnpm coverage
 
   backend:
     name: Backend
