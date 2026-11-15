@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.app.bank.controllers.AccountController;
+import com.app.bank.dto.request.TransferRequest;
 import com.app.bank.dto.response.AccountResponse;
 import com.app.bank.exception.BadRequestException;
 import com.app.bank.exception.ResourceNotFoundException;
@@ -33,6 +34,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import tools.jackson.databind.ObjectMapper;
 
 @WebMvcTest(AccountController.class)
@@ -285,6 +287,105 @@ private OwnershipService ownershipService;
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(invalidAmount)))
                     .andExpect(status().isBadRequest());
+        }
+
+        @Test
+        @DisplayName("Should return 403 when user does not own account")
+        void shouldReturnForbiddenWhenNotOwner() throws Exception {
+            BigDecimal withdrawAmount = new BigDecimal("100.00");
+            UserPrincipal otherPrincipal = new UserPrincipal(new User("otheruser", "password"));
+            doThrow(new AccessDeniedException("You do not own this account."))
+                    .when(accountService).withdrawAmount("otheruser", accountNumber, withdrawAmount);
+
+            mvc.perform(post("/api/v1/account/{accountNumber}/withdraw", accountNumber)
+                    .with(csrf())
+                    .with(user(otherPrincipal))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(withdrawAmount)))
+                    .andExpect(status().isForbidden());
+
+            verify(accountService, never()).getAccountResponse(any(), any());
+        }
+
+        // Regression: an unreadable body previously fell through to the catch-all handler as a 500.
+        @Test
+        @DisplayName("Should return 400 when request body is missing")
+        void shouldReturnBadRequestWhenBodyMissing() throws Exception {
+            mvc.perform(post("/api/v1/account/{accountNumber}/withdraw", accountNumber)
+                    .with(csrf())
+                    .with(user(principal))
+                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isBadRequest());
+
+            verify(accountService, never()).withdrawAmount(any(), any(), any());
+        }
+    }
+
+    // ======================== Transfer Tests ========================
+    @Nested
+    @DisplayName("POST /api/v1/account/transfer")
+    class TransferTests {
+
+        private final String destinationNumber = "9876543210";
+
+        private ResultActions postTransfer(UserPrincipal caller, TransferRequest request)
+                throws Exception {
+            return mvc.perform(post("/api/v1/account/transfer")
+                    .with(csrf())
+                    .with(user(caller))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(request)));
+        }
+
+        @Test
+        @DisplayName("Should transfer successfully")
+        void shouldTransferSuccessfully() throws Exception {
+            postTransfer(principal, new TransferRequest(accountNumber, destinationNumber, new BigDecimal("100.00")))
+                    .andExpect(status().isOk())
+                    .andExpect(content().string("Transfer successful."));
+
+            verify(accountService, times(1)).transfer(eq(testUsername), any(TransferRequest.class));
+        }
+
+        @Test
+        @DisplayName("Should return 403 when caller does not own the source account")
+        void shouldReturnForbiddenWhenSourceNotOwned() throws Exception {
+            UserPrincipal otherPrincipal = new UserPrincipal(new User("otheruser", "password"));
+            doThrow(new AccessDeniedException("You do not own this account."))
+                    .when(accountService).transfer(eq("otheruser"), any(TransferRequest.class));
+
+            postTransfer(otherPrincipal, new TransferRequest(accountNumber, destinationNumber, new BigDecimal("100.00")))
+                    .andExpect(status().isForbidden());
+        }
+
+        @Test
+        @DisplayName("Should return 404 when destination account does not exist")
+        void shouldReturnNotFoundWhenDestinationMissing() throws Exception {
+            doThrow(new ResourceNotFoundException("Account not found."))
+                    .when(accountService).transfer(eq(testUsername), any(TransferRequest.class));
+
+            postTransfer(principal, new TransferRequest(accountNumber, destinationNumber, new BigDecimal("100.00")))
+                    .andExpect(status().isNotFound());
+        }
+
+        @Test
+        @DisplayName("Should return 400 and skip the service when amount is negative")
+        void shouldRejectNegativeAmountBeforeService() throws Exception {
+            postTransfer(principal, new TransferRequest(accountNumber, destinationNumber, new BigDecimal("-100.00")))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(content().string("Amount must be greater than zero"));
+
+            verify(accountService, never()).transfer(any(), any());
+        }
+
+        @Test
+        @DisplayName("Should return 400 and skip the service when destination is blank")
+        void shouldRejectBlankDestinationBeforeService() throws Exception {
+            postTransfer(principal, new TransferRequest(accountNumber, "", new BigDecimal("100.00")))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(content().string("Destination account number is required"));
+
+            verify(accountService, never()).transfer(any(), any());
         }
     }
 

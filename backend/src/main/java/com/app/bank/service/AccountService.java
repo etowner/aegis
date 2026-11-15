@@ -47,6 +47,14 @@ public class AccountService {
             && type != null && !type.isBlank();
     }
 
+    // Null-safe positive check, shared by every money-moving method so the service
+    // never relies on controller-level @Valid alone.
+    private void requirePositive(BigDecimal amount, String message) {
+        if (amount == null || amount.signum() <= 0) {
+            throw new BadRequestException(message);
+        }
+    }
+
     private Account findAccount(String accountNumber) {
         return accountRepository.findByAccountNumber(accountNumber).orElseThrow(() -> new ResourceNotFoundException("Account not found."));
     }
@@ -106,9 +114,7 @@ public class AccountService {
     public void depositAmount(String username, String accountNumber, BigDecimal amount) {
         verifyOwnership(accountNumber, username);
         
-        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new BadRequestException("Deposit amount must be greater than zero.");
-        }
+        requirePositive(amount, "Deposit amount must be greater than zero.");
         Account account = getAccount(accountNumber);
 
         account.setBalance(account.getBalance().add(amount));
@@ -118,9 +124,7 @@ public class AccountService {
 
     public void withdrawAmount(String username, String accountNumber, BigDecimal amount) {
         verifyOwnership(accountNumber, username);
-        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new BadRequestException("Withdrawal amount must be greater than zero.");
-        }
+        requirePositive(amount, "Withdrawal amount must be greater than zero.");
         Account account = getAccount(accountNumber);
         BigDecimal newBalance = account.getBalance().subtract(amount);
         if (newBalance.compareTo(BigDecimal.ZERO) < 0) {
@@ -136,20 +140,21 @@ public class AccountService {
     public void transfer(String username, TransferRequest request) {
         String accountNumber1 = request.getAccountNumber1();
         verifyOwnership(accountNumber1, username);
-        
-        // Check if account exists, ownership not required for destination account
-        String accountNumber2 = request.getAccountNumber2();
-        findAccount(accountNumber2); 
-        
+
+        // A non-positive amount would reverse the transfer and debit an account the caller doesn't own.
         BigDecimal amount = request.getAmount();
+        requirePositive(amount, "Transfer amount must be greater than zero.");
+
+        String accountNumber2 = request.getAccountNumber2();
         if (accountNumber1.equals(accountNumber2)) {
             throw new BadRequestException("Source and destination accounts must be different.");
         }
 
         Account account1 = getAccount(accountNumber1);
+        // Destination must exist; ownership is not required.
         Account account2 = getAccount(accountNumber2);
 
-        BigDecimal newBalance1 = account1.getBalance().subtract(request.getAmount());
+        BigDecimal newBalance1 = account1.getBalance().subtract(amount);
         if (newBalance1.compareTo(BigDecimal.ZERO) < 0) {
             throw new BadRequestException("Insufficient funds in the source account.");
         }
