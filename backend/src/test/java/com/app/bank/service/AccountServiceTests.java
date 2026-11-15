@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
+import com.app.bank.dto.request.TransferRequest;
 import com.app.bank.exception.BadRequestException;
 import com.app.bank.exception.ResourceNotFoundException;
 import com.app.bank.model.Account;
@@ -250,6 +251,17 @@ public class AccountServiceTests {
                     () -> accountService.depositAmount("otheruser", accountNumber, new BigDecimal("100.00")));
             assertEquals("You do not own this account.", ex.getMessage());
         }
+
+        @Test
+        @DisplayName("Should throw BadRequestException when deposit amount is null")
+        void shouldThrowBadRequestWhenAmountIsNull() {
+            when(accountRepository.findByAccountNumber(accountNumber)).thenReturn(Optional.of(validAccount));
+
+            BadRequestException ex = assertThrows(BadRequestException.class,
+                    () -> accountService.depositAmount(testUsername, accountNumber, null));
+            assertEquals("Deposit amount must be greater than zero.", ex.getMessage());
+            verify(accountRepository, never()).save(any(Account.class));
+        }
     }
 
     // ======================== Withdraw Tests ========================
@@ -308,6 +320,143 @@ public class AccountServiceTests {
             AccessDeniedException ex = assertThrows(AccessDeniedException.class,
                     () -> accountService.withdrawAmount("otheruser", accountNumber, new BigDecimal("100.00")));
             assertEquals("You do not own this account.", ex.getMessage());
+        }
+
+        @Test
+        @DisplayName("Should throw BadRequestException when withdrawal amount is null")
+        void shouldThrowBadRequestWhenAmountIsNull() {
+            when(accountRepository.findByAccountNumber(accountNumber)).thenReturn(Optional.of(validAccount));
+
+            BadRequestException ex = assertThrows(BadRequestException.class,
+                    () -> accountService.withdrawAmount(testUsername, accountNumber, null));
+            assertEquals("Withdrawal amount must be greater than zero.", ex.getMessage());
+            verify(accountRepository, never()).save(any(Account.class));
+        }
+    }
+
+    // ======================== Transfer Tests ========================
+    // TransferRollbackTests covers atomicity against a real database (excluded from CI).
+    // These cover ownership and input rules, where the destination belongs to someone else.
+    @Nested
+    @DisplayName("Transfer Tests")
+    class TransferTests {
+
+        private final String destinationNumber = "9876543210";
+        private Account destinationAccount;
+
+        @BeforeEach
+        void setUpDestination() {
+            destinationAccount = new Account("otheruser", destinationNumber, "Savings");
+            destinationAccount.setBalance(new BigDecimal("500.00"));
+        }
+
+        private void assertNothingPersisted() {
+            verify(accountRepository, never()).save(any(Account.class));
+            verify(transactionService, never()).transfer(any(), any(), any());
+            assertEquals(new BigDecimal("1000.00"), validAccount.getBalance());
+            assertEquals(new BigDecimal("500.00"), destinationAccount.getBalance());
+        }
+
+        @Test
+        @DisplayName("Should move funds from owned source to another user's destination")
+        void shouldTransferToAnotherUsersAccount() {
+            when(accountRepository.findByAccountNumber(accountNumber)).thenReturn(Optional.of(validAccount));
+            when(accountRepository.findByAccountNumber(destinationNumber)).thenReturn(Optional.of(destinationAccount));
+            BigDecimal amount = new BigDecimal("100.00");
+
+            accountService.transfer(testUsername, new TransferRequest(accountNumber, destinationNumber, amount));
+
+            assertEquals(new BigDecimal("900.00"), validAccount.getBalance());
+            assertEquals(new BigDecimal("600.00"), destinationAccount.getBalance());
+            verify(accountRepository).save(validAccount);
+            verify(accountRepository).save(destinationAccount);
+            verify(transactionService).transfer(accountNumber, destinationNumber, amount);
+        }
+
+        @Test
+        @DisplayName("Should throw AccessDeniedException when caller does not own the source account")
+        void shouldThrowAccessDeniedWhenSourceNotOwned() {
+            when(accountRepository.findByAccountNumber(accountNumber)).thenReturn(Optional.of(validAccount));
+
+            AccessDeniedException ex = assertThrows(AccessDeniedException.class,
+                    () -> accountService.transfer("otheruser",
+                            new TransferRequest(accountNumber, destinationNumber, new BigDecimal("100.00"))));
+            assertEquals("You do not own this account.", ex.getMessage());
+            assertNothingPersisted();
+        }
+
+        @Test
+        @DisplayName("Should throw ResourceNotFoundException when destination does not exist")
+        void shouldThrowNotFoundWhenDestinationMissing() {
+            when(accountRepository.findByAccountNumber(accountNumber)).thenReturn(Optional.of(validAccount));
+            when(accountRepository.findByAccountNumber(destinationNumber)).thenReturn(Optional.empty());
+
+            assertThrows(ResourceNotFoundException.class,
+                    () -> accountService.transfer(testUsername,
+                            new TransferRequest(accountNumber, destinationNumber, new BigDecimal("100.00"))));
+            assertNothingPersisted();
+        }
+
+        @Test
+        @DisplayName("Should throw BadRequestException when source and destination are the same")
+        void shouldThrowBadRequestWhenSameAccount() {
+            when(accountRepository.findByAccountNumber(accountNumber)).thenReturn(Optional.of(validAccount));
+
+            BadRequestException ex = assertThrows(BadRequestException.class,
+                    () -> accountService.transfer(testUsername,
+                            new TransferRequest(accountNumber, accountNumber, new BigDecimal("100.00"))));
+            assertEquals("Source and destination accounts must be different.", ex.getMessage());
+            assertNothingPersisted();
+        }
+
+        @Test
+        @DisplayName("Should throw BadRequestException when source has insufficient funds")
+        void shouldThrowBadRequestWhenInsufficientFunds() {
+            when(accountRepository.findByAccountNumber(accountNumber)).thenReturn(Optional.of(validAccount));
+            when(accountRepository.findByAccountNumber(destinationNumber)).thenReturn(Optional.of(destinationAccount));
+
+            BadRequestException ex = assertThrows(BadRequestException.class,
+                    () -> accountService.transfer(testUsername,
+                            new TransferRequest(accountNumber, destinationNumber, new BigDecimal("2000.00"))));
+            assertEquals("Insufficient funds in the source account.", ex.getMessage());
+            assertNothingPersisted();
+        }
+
+        // Regression: a negative amount reverses the direction and debits an account the caller does not own.
+        @Test
+        @DisplayName("Should throw BadRequestException when amount is negative")
+        void shouldThrowBadRequestWhenAmountIsNegative() {
+            when(accountRepository.findByAccountNumber(accountNumber)).thenReturn(Optional.of(validAccount));
+
+            BadRequestException ex = assertThrows(BadRequestException.class,
+                    () -> accountService.transfer(testUsername,
+                            new TransferRequest(accountNumber, destinationNumber, new BigDecimal("-100.00"))));
+            assertEquals("Transfer amount must be greater than zero.", ex.getMessage());
+            assertNothingPersisted();
+        }
+
+        @Test
+        @DisplayName("Should throw BadRequestException when amount is zero")
+        void shouldThrowBadRequestWhenAmountIsZero() {
+            when(accountRepository.findByAccountNumber(accountNumber)).thenReturn(Optional.of(validAccount));
+
+            BadRequestException ex = assertThrows(BadRequestException.class,
+                    () -> accountService.transfer(testUsername,
+                            new TransferRequest(accountNumber, destinationNumber, BigDecimal.ZERO)));
+            assertEquals("Transfer amount must be greater than zero.", ex.getMessage());
+            assertNothingPersisted();
+        }
+
+        @Test
+        @DisplayName("Should throw BadRequestException when amount is null")
+        void shouldThrowBadRequestWhenAmountIsNull() {
+            when(accountRepository.findByAccountNumber(accountNumber)).thenReturn(Optional.of(validAccount));
+
+            BadRequestException ex = assertThrows(BadRequestException.class,
+                    () -> accountService.transfer(testUsername,
+                            new TransferRequest(accountNumber, destinationNumber, null)));
+            assertEquals("Transfer amount must be greater than zero.", ex.getMessage());
+            assertNothingPersisted();
         }
     }
 
