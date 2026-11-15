@@ -2,7 +2,7 @@ import { render, screen } from '@tests/testUtils';
 import Header from "@/components/NavBar/Header";
 import { MemoryRouter } from 'react-router-dom';
 
-vi.mock('@Header/ProfileManager.tsx', () => ({
+vi.mock('@/components/NavBar/Profile', () => ({
   default: () => <div data-testid="profile-manager">Mocked ProfileManager</div>,
 }));
 

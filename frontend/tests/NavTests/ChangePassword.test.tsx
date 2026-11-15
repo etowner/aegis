@@ -26,7 +26,7 @@ describe("ChangePassword", () => {
     expect(screen.getByLabelText("New Password")).toBeInTheDocument();
     expect(screen.getByLabelText("Confirm New Password")).toBeInTheDocument();
 
-    expect(screen.getByRole("button", { name: /change password/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /^change$/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /cancel/i })).toBeInTheDocument();
 
     expect(screen.queryByRole("alert", { name: /password changed successfully!/i })).not.toBeInTheDocument();
@@ -37,7 +37,7 @@ describe("ChangePassword", () => {
     it("displays error when current password is empty", async () => {
       renderChangePassword();
 
-      await user.click(screen.getByRole("button", { name: /change password/i }));
+      await user.click(screen.getByRole("button", { name: /^change$/i }));
       expect(await screen.findByText(/please enter your current password/i)).toBeInTheDocument();
     });
 
@@ -45,7 +45,7 @@ describe("ChangePassword", () => {
       renderChangePassword();
       
       await user.type(screen.getByLabelText(/current password/i), "password123");
-      await user.click(screen.getByRole("button", { name: /change password/i }));
+      await user.click(screen.getByRole("button", { name: /^change$/i }));
       expect(await screen.findByText(/please enter and confirm your new password/i)).toBeInTheDocument();
     });
 
@@ -55,7 +55,7 @@ describe("ChangePassword", () => {
       await user.type(screen.getByLabelText(/current password/i), "password123");
       await user.type(screen.getByLabelText("New Password"), "newpassword123");
       await user.type(screen.getByLabelText("Confirm New Password"), "differentpassword123");
-      await user.click(screen.getByRole("button", { name: /change password/i }));
+      await user.click(screen.getByRole("button", { name: /^change$/i }));
       
       expect(await screen.findByText(/new passwords do not match/i)).toBeInTheDocument();
     });
@@ -66,7 +66,7 @@ describe("ChangePassword", () => {
       await user.type(screen.getByLabelText(/current password/i), "password123");
       await user.type(screen.getByLabelText("New Password"), "password123");
       await user.type(screen.getByLabelText("Confirm New Password"), "password123");
-      await user.click(screen.getByRole("button", { name: /change password/i }));
+      await user.click(screen.getByRole("button", { name: /^change$/i }));
       
       expect(await screen.findByText(/new password cannot be the same as current password/i)).toBeInTheDocument();
     });
@@ -77,7 +77,7 @@ describe("ChangePassword", () => {
       await user.type(screen.getByLabelText(/current password/i), "password123");
       await user.type(screen.getByLabelText("New Password"), "ab");
       await user.type(screen.getByLabelText("Confirm New Password"), "ab");
-      await user.click(screen.getByRole("button", { name: /change password/i }));
+      await user.click(screen.getByRole("button", { name: /^change$/i }));
       
       expect(await screen.findByText(/new password must be at least 3 characters/i)).toBeInTheDocument();
     });
@@ -93,7 +93,7 @@ describe("ChangePassword", () => {
       await user.type(screen.getByLabelText(/current password/i), "password123");
       await user.type(screen.getByLabelText("New Password"), "newpassword123");
       await user.type(screen.getByLabelText("Confirm New Password"), "newpassword123");
-      await user.click(screen.getByRole("button", { name: /change password/i }));
+      await user.click(screen.getByRole("button", { name: /^change$/i }));
       
       expect(changePassword).toHaveBeenCalledWith("password123", "newpassword123");
       expect(await screen.findByRole('alert')).toHaveTextContent('Password changed successfully!');
@@ -106,7 +106,7 @@ describe("ChangePassword", () => {
       await user.type(screen.getByLabelText(/current password/i), "password123");
       await user.type(screen.getByLabelText("New Password"), "newpassword123");
       await user.type(screen.getByLabelText("Confirm New Password"), "newpassword123");
-      await user.click(screen.getByRole("button", { name: /change password/i }));
+      await user.click(screen.getByRole("button", { name: /^change$/i }));
 
       expect(changePassword).toHaveBeenCalledWith("password123", "newpassword123");
       expect(await screen.findByRole('alert')).toHaveTextContent('Test error message');
