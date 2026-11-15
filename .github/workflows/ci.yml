@@ -21,21 +21,10 @@ jobs:
         working-directory: frontend
     steps:
       - uses: actions/checkout@v7
-
-      # Pinned to 10.x, inferred from the repo: pnpm-lock.yaml is lockfileVersion
-      # 9.0 with a `settings:` block and there is no pnpm-lock.env.yaml, so this
-      # is not pnpm 11; `allowBuilds` in pnpm-workspace.yaml requires >= 10.26.
-      # Better: add "packageManager": "pnpm@<exact local version>" to
-      # frontend/package.json, then drop `version` here and use
-      # `package_json_file: frontend/package.json` instead. That keeps CI and
-      # local on the same pnpm permanently.
       - uses: pnpm/action-setup@v6
-        with:
-          version: 10
-
+       
       - uses: actions/setup-node@v7
         with:
-          node-version: 24
           cache: pnpm
           cache-dependency-path: frontend/pnpm-lock.yaml
 
@@ -76,14 +65,5 @@ jobs:
           java-version: 25
           cache: maven
 
-      # BankApplicationTests and TransferRollbackTests are @SpringBootTest: they
-      # boot the full context and need a Mongo URI, but .gitignore excludes
-      # *.properties so no Spring config is committed at all. The other seven
-      # (@ExtendWith(MockitoExtension) and @WebMvcTest) need none.
-      #
-      # To re-enable them: commit a test-scoped application.properties with
-      # secrets read from env vars, and add a mongo service container started
-      # with --replSet (TransferRollbackTests exercises @Transactional, which
-      # requires a replica set).
       - name: Unit and web-layer tests
         run: ./mvnw -B --no-transfer-progress test -Dtest='!BankApplicationTests,!TransferRollbackTests'
