@@ -9,7 +9,7 @@ const ThemeToggle = () => {
       className="theme-toggle"
       variant="link"
       onClick={toggleTheme}
-      aria-label={dark ? "dark mode" : "light mode"}
+      aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
     >
       <i className={`bi ${dark ? "bi-moon-stars-fill" : "bi-sun-fill"}`} aria-hidden="true" />
     </Button>
