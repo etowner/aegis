@@ -33,13 +33,17 @@ jobs:
 
       - name: Install
         run: pnpm install --frozen-lockfile
+      
+      - name: Peer dependencies
+        run: pnpm peers check
 
       - name: Lint
         run: pnpm lint
 
       - name: Typecheck and build
         run: pnpm build
-        
+
+        # NOT pnpm test, it's watch mode
       - name: Tests
         run: pnpm coverage
 
