@@ -14,13 +14,12 @@ vi.mock('react-router-dom', async () => {
 const user = userEvent.setup();
 
 const renderWithdraw = () => {
-  const setAccount = vi.fn();
   const refetch = vi.fn();
   const balance = 500;
   render( <Withdraw balance={balance} refetch={refetch} />
   );
 
-  return { balance, setAccount, refetch };
+  return { balance, refetch };
 
 }
 
@@ -37,14 +36,12 @@ describe("Withdraw", () => {
   });
 
   test("submits a valid withdraw amount", async () => {
-    const {setAccount, refetch } = renderWithdraw();
+    const { refetch } = renderWithdraw();
 
-  
     await user.type(screen.getByRole("spinbutton"), "100.50");
     await user.click(screen.getByRole("button", { name: /confirm withdrawal/i }));
-    
+
     await waitFor(() => expect(withdraw).toHaveBeenCalledWith("1234567890", 100.50));
-    expect(setAccount).toHaveBeenCalled();
     await waitFor(() => expect(refetch).toHaveBeenCalled());
    
   });

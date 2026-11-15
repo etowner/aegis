@@ -21,19 +21,19 @@ const mockUserContext = {
 vi.mock('@/context/UserContext');
 vi.mock('@/api/accountApi');
 
-vi.mock("@Home/PieChart", () => ({
+vi.mock("@Dashboard/PieChart", () => ({
   default: () => <div data-testid="pie-chart">Mocked PieChart</div>,
 }));
 
-vi.mock("@Header/Header",() => ({
+vi.mock("@/components/NavBar/Header",() => ({
   default: () => <div data-testid="header">Mocked Header</div>,
 }));
 
-vi.mock("@Home/AccountList", () => ({
+vi.mock("@Dashboard/AccountList", () => ({
   default: () => <div data-testid="account-list">Mocked AccountList</div>,
 }));
 
-vi.mock("@Home/Transfer", () => ({
+vi.mock("@Dashboard/Transfer", () => ({
   default: () => <div data-testid="transfer">Mocked Transfer</div>,
 }));
  

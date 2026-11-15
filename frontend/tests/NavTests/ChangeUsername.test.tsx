@@ -24,7 +24,7 @@ describe("ChangeUsername", () => {
 
     expect(screen.getByLabelText(/current password/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/new username/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /change username/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /^change$/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /cancel/i })).toBeInTheDocument();
 
     expect(screen.queryByRole("alert", { name: /username changed successfully! please log in again with the new username./i })).not.toBeInTheDocument();
@@ -35,7 +35,7 @@ describe("ChangeUsername", () => {
     it("displays error when current password is empty", async () => {
       renderChangeUsername();
 
-      await user.click(screen.getByRole("button", { name: /change username/i }));
+      await user.click(screen.getByRole("button", { name: /^change$/i }));
       expect(await screen.findByText(/please enter your current password/i)).toBeInTheDocument();
     });
 
@@ -43,7 +43,7 @@ describe("ChangeUsername", () => {
       renderChangeUsername();
       
       await user.type(screen.getByLabelText(/current password/i), "password123");
-      await user.click(screen.getByRole("button", { name: /change username/i }));
+      await user.click(screen.getByRole("button", { name: /^change$/i }));
       expect(await screen.findByText(/please enter a new username/i)).toBeInTheDocument();
     });
 
@@ -52,7 +52,7 @@ describe("ChangeUsername", () => {
       
       await user.type(screen.getByLabelText(/current password/i), "password123");
       await user.type(screen.getByLabelText(/new username/i), "ab");
-      await user.click(screen.getByRole("button", { name: /change username/i }));
+      await user.click(screen.getByRole("button", { name: /^change$/i }));
       
       expect(await screen.findByText(/username must be at least 3 characters/i)).toBeInTheDocument();
     });
@@ -62,7 +62,7 @@ describe("ChangeUsername", () => {
 
       await user.type(screen.getByLabelText(/current password/i), "password123");
       await user.type(screen.getByLabelText(/new username/i), "invalid username!");
-      await user.click(screen.getByRole("button", { name: /change username/i }));
+      await user.click(screen.getByRole("button", { name: /^change$/i }));
       
       expect(await screen.findByText(/username can only contain letters, numbers, underscores, and hyphens/i)).toBeInTheDocument();
     });
@@ -75,7 +75,7 @@ describe("ChangeUsername", () => {
 
       await user.type(screen.getByLabelText(/current password/i), "password123");
       await user.type(screen.getByLabelText(/new username/i), "newusername");
-      await user.click(screen.getByRole("button", { name: /change username/i }));
+      await user.click(screen.getByRole("button", { name: /^change$/i }));
       
       expect(changeUsername).toHaveBeenCalledWith("password123", "newusername");
       expect(await screen.findByRole('alert')).toHaveTextContent('Username changed successfully! Please log in again with your new username.');
@@ -87,7 +87,7 @@ describe("ChangeUsername", () => {
       
       await user.type(screen.getByLabelText(/current password/i), "password123");
       await user.type(screen.getByLabelText(/new username/i), "newusername");
-      await user.click(screen.getByRole("button", { name: /change username/i }));
+      await user.click(screen.getByRole("button", { name: /^change$/i }));
 
       expect(changeUsername).toHaveBeenCalledWith("password123", "newusername");
       expect(await screen.findByRole('alert')).toHaveTextContent('Test error message');
