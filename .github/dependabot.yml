@@ -1,32 +1,87 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+# Dependabot configuration
+# Docs: https://docs.github.com/code-security/dependabot/working-with-dependabot/dependabot-options-reference
+#
+# Grouping strategy:
+#   - Groups are evaluated top to bottom; a dependency lands in the FIRST group it matches.
+#   - Lockstep families (vitest, react) are grouped for ALL update types, majors included,
+#     because bumping one member without the others breaks the build.
+#   - Everything else: minor + patch go into one weekly PR per ecosystem.
+#     Majors stay as individual PRs so a breaking change can't block routine updates.
+#   - Security fixes get their own grouped PR per ecosystem (groups default to
+#     version-updates only, so without these, each advisory opens its own PR).
 
 version: 2
-updates:
-  - package-ecosystem: "npm" # See documentation for possible values
-    directory: "/frontend" 
+
+multi-ecosystem-groups:
+  infrastructure:
     schedule:
-      interval: "daily" 
-    groups: # Instruct Dependabot to group certain dependencies together in a single pull request
+      interval: "weekly"
+      day: "monday"
+
+updates:
+  # ---------------------------------------------------------------- Frontend
+  - package-ecosystem: "npm"
+    directory: "/frontend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    cooldown:
+      default-days: 3
+      semver-major-days: 7
+    groups:
+      npm-security:
+        applies-to: security-updates
+        patterns:
+          - "*"
       vitest:
         patterns:
           - "vitest"
           - "@vitest/*"
-  
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+      npm-minor-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # ----------------------------------------------------------------- Backend
   - package-ecosystem: "maven"
     directory: "/backend"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+      day: "monday"
+    cooldown:
+      default-days: 3
+      semver-major-days: 7
+    groups:
+      maven-security:
+        applies-to: security-updates
+        patterns:
+          - "*"
+      maven-minor-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # ---------------------------------------------- Infrastructure (one PR/week)
   - package-ecosystem: "docker"
-    directories: 
+    directories:
       - "/frontend"
       - "/backend"
-    schedule:
-      interval: "daily"
-  - package-ecosystem: "docker-compose"
-    directory: "/"
-    schedule:
-      interval: "daily"
+    patterns:
+      - "*"
+    multi-ecosystem-group: "infrastructure"
 
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    patterns:
+      - "*"
+    multi-ecosystem-group: "infrastructure"
