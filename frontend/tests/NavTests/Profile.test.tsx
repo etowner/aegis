@@ -4,7 +4,7 @@ import { deleteUser, logoutUser } from "@/api/userApi";
 import { deleteAllAccounts } from "@/api/accountApi";
 import { useUserContext } from "@/context/UserContext";
 import { MemoryRouter } from "react-router-dom";
-import ProfileManager from "@/components/Navbar/Profile";
+import ProfileManager from "@/components/NavBar/Profile";
 import { getAxiosError } from '@/api/axiosConfig';
 
 const navigateMock = vi.fn();

@@ -1,4 +1,4 @@
-import ChangePassword from "@/components/Navbar/ChangePassword";
+import ChangePassword from "@/components/NavBar/ChangePassword";
 import { changePassword } from "@/api/userApi";
 import { getAxiosError } from "@/api/axiosConfig";
 import { render, screen } from "@tests/testUtils";

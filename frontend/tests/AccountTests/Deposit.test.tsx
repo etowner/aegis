@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@tests/testUtils';
 import userEvent from "@testing-library/user-event";
 import { deposit } from "@/api/transactionApi";
-import Deposit from "@account/Deposit";
+import Deposit from "@Account/Deposit";
 
 
 vi.mock('react-router-dom', async () => {

@@ -1,5 +1,5 @@
 import { render, screen } from '@tests/testUtils';
-import Header from "@/components/Navbar/Header";
+import Header from "@/components/NavBar/Header";
 import { MemoryRouter } from 'react-router-dom';
 
 vi.mock('@Header/ProfileManager.tsx', () => ({
