@@ -29,10 +29,10 @@ vi.mock('@/context/UserContext');
 vi.mock("@/api/userApi");
 vi.mock("@/api/accountApi");
 vi.mock("@/api/axiosConfig");
-vi.mock("@Header/ChangePassword", () => ({
+vi.mock("@/components/NavBar/ChangePassword", () => ({
   default: () => <div data-testid="change-password">Mocked ChangePassword</div>,
 }));
-vi.mock("@Header/ChangeUsername", () => ({
+vi.mock("@/components/NavBar/ChangeUsername", () => ({
   default: () => <div data-testid="change-username">Mocked ChangeUsername</div>,
 }));
 
