@@ -1,7 +1,7 @@
 import { render, screen } from '@tests/testUtils';
 import FrontPage from "@/pages/AuthPage";
 
-vi.mock('@FrontPage/AccountBox', () => ({
+vi.mock('@Auth/AuthBox', () => ({
   default: () => <div data-testid="account-box">Mocked AccountBox</div>,
 }));
 
